@@ -23,7 +23,7 @@ Title of your project goes here.
 ### 👥 Team Members
 | 👤 Name 🧑‍🎓      | 🆔 Student ID 🧾    | 🐙 GitHub Username 🔗  |
 |------------------|---------------------|--------------------------|
-| Nguyễn Quang Anh |      23001825       | 230011825_NguyenQuangAnh |
+| Nguyễn Quang Anh |      23001825       | 23001825_NguyenQuangAnh  |
 | [Your Name 2]    | [Your Student ID 2] | [Your GitHub Username 2] |
 | [Your Name 3]    | [Your Student ID 3] | [Your GitHub Username 3] |
 
