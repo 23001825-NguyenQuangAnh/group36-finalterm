@@ -30,7 +30,7 @@ Title of your project goes here.
 | ---------------- | ------------------- | ------------------------ |
 | Nguyễn Quang Anh | 23001825            | 230011825_NguyenQuangAnh |
 | Hoàng Mạnh Duy   | 23001852            | duy-301205               |
-| [Your Name 3]    | [Your Student ID 3] | [Your GitHub Username 3] |
+| Bàn Khánh Duy    | 23001851            | Hatou1                   |
 
 ### 🗒️ Summary
 
