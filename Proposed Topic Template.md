@@ -24,6 +24,8 @@ Title of your project goes here.
 
 ### 👥 Team Members
 
+<<<<<<< HEAD
+
 | 👤 Name 🧑‍🎓       | 🆔 Student ID 🧾    | 🐙 GitHub Username 🔗    |
 | ---------------- | ------------------- | ------------------------ |
 | Nguyễn Quang Anh | 23001825            | 230011825_NguyenQuangAnh |
