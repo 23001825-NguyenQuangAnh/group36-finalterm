@@ -31,6 +31,7 @@ Title of your project goes here.
 | Nguyễn Quang Anh | 23001825            | 230011825_NguyenQuangAnh |
 | Hoàng Mạnh Duy   | 23001852            | duy-301205               |
 | Bàn Khánh Duy    | 23001851            | Hatou1                   |
+| Nguyễn Thái Dương| 23001859            | Duong5326                |
 
 ### 🗒️ Summary
 
