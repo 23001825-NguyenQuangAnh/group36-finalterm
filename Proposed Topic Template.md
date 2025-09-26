@@ -26,7 +26,7 @@ Title of your project goes here.
 
 <<<<<<< HEAD
 
-| 👤 Name 🧑‍🎓       | 🆔 Student ID 🧾    | 🐙 GitHub Username 🔗    |
+| 👤 Name 🧑‍🎓      | 🆔 Student ID 🧾   | 🐙 GitHub Username 🔗   |
 | ---------------- | ------------------- | ------------------------ |
 | Nguyễn Quang Anh | 23001825            | 230011825_NguyenQuangAnh |
 | Hoàng Mạnh Duy   | 23001852            | duy-301205               |
@@ -49,38 +49,3 @@ How do you plan to carry out your project? What are the main steps or milestones
 
 List any references, papers, libraries, or datasets you used when deciding the topic.
 
----
-
-## 🇻🇳 Phiên bản Tiếng Việt
-
-### 🏷️ Tên nhóm
-
-Tên nhóm của bạn.
-
-### 📝 Tên dự án
-
-Tên dự án của bạn.
-
-### 👥 Thành viên nhóm
-
-| 👤 Họ và tên 🧑‍🎓 | 🆔 Mã sinh viên 🧾 | 🐙 Tên GitHub 🔗 |
-| --------------- | ------------------ | ---------------- |
-| [Tên bạn 1]     | [Mã sinh viên 1]   | [Tên GitHub 1]   |
-| [Tên bạn 2]     | [Mã sinh viên 2]   | [Tên GitHub 2]   |
-| [Tên bạn 3]     | [Mã sinh viên 3]   | [Tên GitHub 3]   |
-
-### 🗒️ Tóm tắt
-
-Mô tả ngắn gọn về dự án của bạn (khoảng 200–300 ký tự).
-
-### 🎯 Bối cảnh
-
-Dự án của bạn sẽ giải quyết vấn đề gì? Động lực nào khiến bạn chọn chủ đề này? Tại sao chủ đề này quan trọng hoặc thú vị?
-
-### 🚀 Kế hoạch
-
-Bạn dự định thực hiện dự án như thế nào? Các bước chính sẽ thực hiện là gì? (ví dụ: thu thập dữ liệu, xây dựng mô hình, đánh giá, demo)
-
-### 📚 Tài liệu tham khảo
-
-Liệt kê các tài liệu tham khảo, bài báo, thư viện hoặc tập dữ liệu bạn đã sử dụng khi quyết định chủ đề dự án.
