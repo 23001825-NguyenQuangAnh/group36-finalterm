@@ -32,7 +32,7 @@ Title of your project goes here.
 | Hoàng Mạnh Duy   | 23001852            | duy-301205               |
 | Bàn Khánh Duy    | 23001851            | Hatou1                   |
 | Nguyễn Thái Dương| 23001859            | Duong5326                |
-
+| Nguyễn Nhật Đan  | 23001861            | ChimSe08                 |
 ### 🗒️ Summary
 
 Briefly describe your project (approx. 200–300 characters).
