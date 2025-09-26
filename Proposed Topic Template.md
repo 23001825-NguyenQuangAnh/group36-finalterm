@@ -48,4 +48,3 @@ How do you plan to carry out your project? What are the main steps or milestones
 ### 📚 References
 
 List any references, papers, libraries, or datasets you used when deciding the topic.
-
