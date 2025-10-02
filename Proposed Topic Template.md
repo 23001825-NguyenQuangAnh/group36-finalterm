@@ -40,7 +40,7 @@ Demo & Deployment – Create an interactive demo showcasing automated task manag
 
 ### 📚 References
 
-Papers: "Intelligent Personal Assistants for Task Management" (various ACM/IEEE sources).
+Papers: "Intelligent Personal Assistants for Task Management" (Karen Myers, Pauline Berry, Jim Blythe, Ken Conley,Melinda Gervasio, Deborah McGuinness, David Morley,Avi Pfeffer, Martha Pollack , and Milind Tambe). [https://projects.iq.harvard.edu/files/teamcore/files/2007_14_teamcore_calo_pexa.pdf]
 
 Libraries: spaCy, Transformers (Hugging Face), Scikit-learn, TensorFlow/PyTorch.
 
