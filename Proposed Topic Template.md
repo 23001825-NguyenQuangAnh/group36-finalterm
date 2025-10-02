@@ -16,7 +16,7 @@
 
 ### 🏷️ Group Name
 
-Your group name goes here.
+Nhóm 36
 
 ### 📝 Project Title
 
