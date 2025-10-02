@@ -20,7 +20,7 @@ Nhóm 36
 
 ### 📝 Project Title
 
-Title of your project goes here.
+AI manages personal work
 
 ### 👥 Team Members
 
