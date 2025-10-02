@@ -8,7 +8,6 @@ AI-Based Task Organizer for Efficient Work Management
 
 ### 👥 Team Members
 
-<<<<<<< HEAD
 
 | 👤 Name 🧑‍🎓      | 🆔 Student ID 🧾   | 🐙 GitHub Username 🔗   |
 | ---------------- | ------------------- | ------------------------ |
