@@ -16,11 +16,11 @@
 
 ### 🏷️ Group Name
 
-Nhóm 36
+Your group name goes here.
 
 ### 📝 Project Title
 
-Title of your project goes here.
+AI-Based Task Organizer for Efficient Work Management
 
 ### 👥 Team Members
 
@@ -35,7 +35,7 @@ Title of your project goes here.
 | Nguyễn Nhật Đan  | 23001861            | ChimSe08                 |
 ### 🗒️ Summary
 
-Briefly describe your project (approx. 200–300 characters).
+Our project is an AI-powered tool designed to help users organize and prioritize their daily tasks efficiently. The system uses natural language processing (NLP) to understand task descriptions and applies intelligent algorithms to schedule them based on urgency, importance, and deadlines. It aims to reduce stress, improve time management, and increase productivity by offering personalized task suggestions and automatic reminders.
 
 ### 🎯 Background
 
