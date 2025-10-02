@@ -1,5 +1,3 @@
-## 🇬🇧 English Version
-
 ### 🏷️ Group Name
 
 Your group name goes here.
