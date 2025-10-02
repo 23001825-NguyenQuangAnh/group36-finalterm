@@ -35,16 +35,32 @@ Title of your project goes here.
 | Nguyễn Nhật Đan  | 23001861            | ChimSe08                 |
 ### 🗒️ Summary
 
-Briefly describe your project (approx. 200–300 characters).
+This project develops an AI-powered work management assistant that helps teams organize, prioritize, and track tasks efficiently. It combines natural language processing with intelligent scheduling to improve productivity and collaboration.
 
 ### 🎯 Background
 
-Which problems will your project solve? What motivations led you to choose this topic? Why is this topic important or interesting?
+Modern teams often face challenges in managing multiple tasks, deadlines, and communications across different platforms. Traditional task managers require manual input and lack smart prioritization. Our motivation is to design an AI system that automatically understands tasks, assigns deadlines, and suggests priorities, reducing human effort. This topic is important because effective work management directly improves team efficiency, lowers stress, and ensures projects meet deadlines.
 
 ### 🚀 Plan
 
-How do you plan to carry out your project? What are the main steps or milestones? (e.g., data collection, modeling, evaluation, demo)
+Requirement Analysis – Define key features (task extraction, scheduling, reminders, reporting).
+
+Data Collection – Gather datasets of task descriptions, schedules, and productivity patterns.
+
+Modeling – Apply NLP to extract tasks from text (emails, chat, notes) and use ML models for priority prediction and scheduling.
+
+System Design – Build frontend (dashboard/web app) and backend (task storage, API, AI engine).
+
+Evaluation – Test accuracy of task extraction and scheduling suggestions with real users.
+
+Demo & Deployment – Create an interactive demo showcasing automated task management, reminders, and analytics.
 
 ### 📚 References
 
-List any references, papers, libraries, or datasets you used when deciding the topic.
+Papers: "Intelligent Personal Assistants for Task Management" (various ACM/IEEE sources).
+
+Libraries: spaCy, Transformers (Hugging Face), Scikit-learn, TensorFlow/PyTorch.
+
+Datasets: Public productivity/task datasets (e.g., Todoist open dataset, Email/Meeting transcripts).
+
+Tools: Trello API, Google Calendar API (for integration ideas).
