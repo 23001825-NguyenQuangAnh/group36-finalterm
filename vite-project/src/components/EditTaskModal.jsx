@@ -61,25 +61,25 @@ function EditTaskModal({ task, onUpdateTask, onClose }) {
           {/* Tên Task */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Tên Task (Bắt buộc)
+              Tên Task
             </label>
             <input 
               value={title} 
               onChange={(e) => setTitle(e.target.value)} 
               placeholder="Ví dụ: Hoàn thành báo cáo AI" 
-              className="px-3 py-2 border rounded w-full" 
+              className="px-3 py-2 border rounded w-full outline-none" 
             />
           </div>
           
           {/* Phân loại */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Phân loại (Bắt buộc)
+              Phân loại
             </label>
             <select
               value={categoryId}
               onChange={(e) => setCategoryId(e.target.value)}
-              className="px-3 py-2 border rounded w-full bg-white"
+              className="px-3 py-2 border rounded w-full bg-white outline-none"
             >
               <option value="">-- Chọn phân loại --</option>
               {CATEGORIES.map(cat => (
@@ -91,13 +91,13 @@ function EditTaskModal({ task, onUpdateTask, onClose }) {
           {/* Miêu tả */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Miêu tả (Không bắt buộc)
+              Miêu tả 
             </label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Thêm mô tả chi tiết cho công việc..."
-              className="px-3 py-2 border rounded w-full"
+              className="px-3 py-2 border rounded w-full outline-none" 
               rows="3"
             ></textarea>
           </div>
@@ -111,7 +111,7 @@ function EditTaskModal({ task, onUpdateTask, onClose }) {
               value={deadline} 
               onChange={(e) => setDeadline(e.target.value)} 
               type="date" 
-              className="px-3 py-2 border rounded w-full" 
+              className="px-3 py-2 border rounded w-full outline-none" 
             />
           </div>
 
@@ -126,7 +126,7 @@ function EditTaskModal({ task, onUpdateTask, onClose }) {
               type="range"
               min="1"
               max="10"
-              className="w-full"
+              className="w-full "
             />
           </div>
 
@@ -138,8 +138,10 @@ function EditTaskModal({ task, onUpdateTask, onClose }) {
             <input 
               value={estimatedDuration} 
               onChange={(e) => setEstimatedDuration(e.target.value)} 
-              type="number" 
-              className="px-3 py-2 border rounded w-full" 
+              type="number"
+              max ="1440" 
+              min="1"
+              className="px-3 py-2 border rounded w-full outline-none" 
             />
           </div>
         </div>

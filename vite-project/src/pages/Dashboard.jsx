@@ -5,7 +5,7 @@ import TaskCard from '../components/TaskCard.jsx';
 import EditTaskModal from '../components/EditTaskModal.jsx';
 import { uid } from '../utils.js'; 
 
-// === HÀM TRỢ GIÚP VỀ NGÀY THÁNG (GIỮ NGUYÊN) ===
+// === HÀM TRỢ GIÚP VỀ NGÀY THÁNG ===
 const getStartOfWeek = (date) => {
   const d = new Date(date);
   const day = d.getDay();
@@ -40,13 +40,13 @@ export default function Dashboard({ tasks, setTasks }) {
   const [editingTask, setEditingTask] = useState(null); 
   const [currentDate, setCurrentDate] = useState(new Date());
 
-  // (addTask, moveTask, completeTask, restoreTask giữ nguyên)
+  // (Các hàm xử lí task)
   const addTask = (title, description, categoryId, deadline, estimatedDuration, importance) => {
     const newTask = { 
       id: uid(), 
       title: title.trim(), 
       description: description.trim() || null,
-      categoryId: categoryId,
+      categoryId,
       status: "pending", 
       durationMins: Number(estimatedDuration) || 60,
       deadline: deadline || null,
@@ -79,7 +79,7 @@ export default function Dashboard({ tasks, setTasks }) {
     setEditingTask(null);
   };
   
-  // (processedTasks... CẬP NHẬT)
+  // Xử lý lọc & sắp xếp Task
   const processedTasks = useMemo(() => {
     let filtered = tasks;
     if (selectedCategory !== 'All') {
@@ -91,7 +91,7 @@ export default function Dashboard({ tasks, setTasks }) {
 
     let sorted = [...filtered]; 
     
-    // CẬP NHẬT: Luôn sắp xếp theo deadline
+    //Luôn sắp xếp theo deadline
     sorted.sort((a, b) => {
       if (!a.deadline) return 1; // Không có deadline xuống cuối
       if (!b.deadline) return -1; // Không có deadline xuống cuối
@@ -99,14 +99,14 @@ export default function Dashboard({ tasks, setTasks }) {
     });
 
     return sorted;
-  }, [tasks, selectedCategory, CATEGORIES]); // <-- ĐÃ XÓA 'sortBy'
+  }, [tasks, selectedCategory]);
 
   const pending = processedTasks.filter((t) => t.status === "pending");
   const priority = processedTasks.filter((t) => t.status === "priority");
   const inprogress = processedTasks.filter((t) => t.status === "inprogress");
   const completed = processedTasks.filter((t) => t.status === "completed");
 
-  // --- (Lịch tuần giữ nguyên) ---
+  // --- Lịch tuần ---
   const daysOfWeek = ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'];
   const dayStyles = {
     MONDAY:   { bg: 'bg-red-50',     border: 'border-red-300',     header: 'bg-red-200 text-red-800' },
@@ -133,19 +133,21 @@ export default function Dashboard({ tasks, setTasks }) {
   }, [tasks, weekDates]);
   // ---
 
-  // (CategoryTab giữ nguyên)
+  // CategoryTab
   const CategoryTab = ({ name, onClick, isActive }) => (
     <button 
       onClick={onClick} 
-      className={`text-sm px-3 py-1 rounded-full whitespace-nowrap ${isActive ? 'bg-blue-600 text-white shadow-md' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+      className={`text-sm px-3 py-1 rounded-full whitespace-nowrap 
+    ${
+        isActive ? 'bg-blue-600 text-white shadow-md' 
+        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+    }`}
 >
       {name}
     </button>
   );
 
-  // const SortButton = ... // <-- ĐÃ XÓA
-  // ---
-
+// === 🧩 Giao diện chính ===
   return (
     <div className="p-6">
       {/* Modal Thêm Task (giữ nguyên) */}
@@ -155,8 +157,6 @@ export default function Dashboard({ tasks, setTasks }) {
           onClose={() => setIsModalOpen(false)}
         />
       )}
-      
-      {/* Modal Chỉnh Sửa Task (giữ nguyên) */}
       {editingTask && (
         <EditTaskModal
           task={editingTask}
@@ -165,21 +165,31 @@ export default function Dashboard({ tasks, setTasks }) {
         />
       )}
 
-      {/* (Hàng Tiêu đề và Nút Add giữ nguyên) */}
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-semibold">Dashboard</h2>
-        <button 
-          onClick={() => setIsModalOpen(true)} 
-          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 shadow"
-        >
-          Thêm Task Mới
-        </button>
-      </div>
+      {/* Hàng Tiêu đề và Nút Add  */}
+      <div className="flex justify-between items-center mb-6">
+        <div>
+          <h2 className="text-3xl font-bold text-gray-800 tracking-tight">
+            Dashboard
+          </h2>
+          <p className="text-sm text-gray-500 mt-1">
+            Theo dõi và quản lý công việc thông minh ✨
+          </p>
+        </div>
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="px-5 py-2.5 bg-blue-600 text-white rounded-xl font-medium shadow hover:bg-blue-700 transition"
+        >
+          Thêm Task Mới
+        </button>
+      </div>
 
-      {/* (Hàng Bộ lọc Category giữ nguyên) */}
+      {/* Bộ lọc Category */}
       <div className="mb-4 pb-2 overflow-x-auto">
         <div className="flex flex-nowrap gap-2">
-          <CategoryTab name="All" onClick={() => setSelectedCategory('All')} isActive={selectedCategory === 'All'} />
+          <CategoryTab 
+            name="All" 
+            onClick={() => setSelectedCategory('All')} 
+            isActive={selectedCategory === 'All'} />
           {CATEGORIES.map(c => (
             <CategoryTab 
               key={c.id} 
@@ -191,13 +201,7 @@ export default function Dashboard({ tasks, setTasks }) {
         </div>
       </div>
 
-      {/* (Hàng Bộ lọc Sắp xếp) <-- ĐÃ XÓA */}
-      {/*       <div className="flex items-center gap-2 mb-4">
-        ...
-      </div>
-      */}
-
-      {/* Lưới hiển thị Task (giữ nguyên) */}
+      {/* Lưới Task */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
         
         {/* Cột Pending */}
@@ -269,9 +273,9 @@ export default function Dashboard({ tasks, setTasks }) {
         </div>
       </div>
       
-      {/* (Lịch Tuần giữ nguyên) */}
+      {/* Lịch Tuần */}
       <div className="bg-white p-4 rounded shadow-sm">
-        <h3 className="text-xl font-semibold mb-4">Lịch Tuần Này</h3>
+        <h3 className="text-xl font-semibold mb-4">📅 Lịch Tuần Này</h3>
         
         <div className="flex justify-between items-center mb-3">
           <button 
