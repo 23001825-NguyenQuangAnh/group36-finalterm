@@ -2,21 +2,47 @@
 import React from 'react';
 import { CATEGORIES } from '../constants.js'; 
 
-function TaskCard({ task, onMove, onComplete, onRestore, onOpenDetails }) {
+export default function TaskCard({ 
+  task, 
+  onMove, 
+  onComplete, 
+  onRestore, 
+  onOpenDetails 
+}) {
   const isInProgress = task.status === "inprogress";
   const isCompleted = task.status === "completed";
 
+  // Lấy tên category từ id
+  const category =
+      CATEGORIES.find((c) => c.id === task.categoryId)?.name || "Chưa phân loại";
+      
   return (
     <div className="bg-white p-3 rounded shadow-sm w-full min-h-[120px]">
-      {/* Tiêu đề + deadline */}
+
+      {/* --- Tiêu đề --- */}
       <div className="mb-2">
-        <div className="font-medium truncate" title={task.title}>
+        <div
+          className="font-semibold text-gray-800 text-sm md:text-base truncate"
+          title={task.title}
+        >
           {task.title}
         </div>
+      </div>
+
+      {/* Tiêu đề + deadline */}
+      <div className="flex items-center justify-between text-xs text-gray-500 mt-1 pb-2">
+        <span className="italic">{category}</span>
         {task.deadline && (
-          <div className="text-xs text-red-600 mt-1">
-            Deadline: {new Date(task.deadline + 'T00:00:00').toLocaleDateString()}
-          </div>
+          <span className="text-red-600">
+            ⏰{" "}
+            {new Date(task.deadline + "T00:00:00").toLocaleDateString(
+              "vi-VN",
+              {
+                day: "2-digit",
+                month: "2-digit",
+              }
+            )}
+          </span>
         )}
       </div>
 
@@ -110,5 +136,3 @@ function TaskCard({ task, onMove, onComplete, onRestore, onOpenDetails }) {
     </div>
   );
 }
-
-export default TaskCard;

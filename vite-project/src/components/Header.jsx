@@ -36,6 +36,13 @@ export default function Header({
     };
   }, [profileMenuRef]);
 
+  const navItems = [
+    { id: "overview", label: "Overview" },
+    { id: "dashboard", label: "Dashboard" },
+    { id: "calendar", label: "Calendar" },
+    { id: "settings", label: "Settings" },
+  ];
+
   return (
     <header className="flex items-center justify-between px-6 py-4 bg-white border-b shadow-sm">
       <div className="flex items-center gap-4">
@@ -44,39 +51,27 @@ export default function Header({
         </div>
         <h1 className="text-xl font-semibold">AI Work Manager</h1>
         <nav className="ml-6 flex gap-2 text-sm text-gray-600">
-          <button
-            onClick={() => setActiveTab("overview")}
-            className={`px-3 py-2 rounded ${
-              activeTab === "overview" ? "bg-gray-200" : "hover:bg-gray-50"
-            }`}>
-            Overview
-          </button>
-          <button
-            onClick={() => setActiveTab("dashboard")}
-            className={`px-3 py-2 rounded ${
-              activeTab === "dashboard" ? "bg-gray-200" : "hover:bg-gray-50"
-            }`}>
-            Dashboard
-          </button>
-          <button
-            onClick={() => setActiveTab("calendar")}
-            className={`px-3 py-2 rounded ${
-              activeTab === "calendar" ? "bg-gray-200" : "hover:bg-gray-50"
-            }`}>
-            Calendar
-          </button>
-          <button
-            onClick={() => setActiveTab("settings")}
-            className={`px-3 py-2 rounded ${
-              activeTab === "settings" ? "bg-gray-200" : "hover:bg-gray-50"
-            }`}>
-            Settings
-          </button>
+          {navItems.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => setActiveTab(item.id)}
+              className={`px-3 py-2 rounded-lg transition-colors ${
+                  activeTab === item.id
+                    ? "bg-blue-100 text-blue-700"
+                    : "hover:bg-gray-100"
+                }`}
+            >
+              {item.label}
+            </button>
+          ))}
         </nav>
       </div>
 
-      <div className="flex items-center gap-4">
-        <button onClick={onSync} className="px-3 py-2 bg-gray-100 rounded">
+      {/* --- Right actions --- */}
+      <div className="flex items-center gap-3">
+        <button 
+         onClick={onSync} 
+         className="px-3 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 text-sm transition">
           Sync
         </button>
 
@@ -92,19 +87,24 @@ export default function Header({
             {/* Nút bấm để mở/đóng menu */}
             <button
               onClick={() => setIsProfileOpen((s) => !s)}
-              className="text-sm flex items-center gap-1 rounded p-2 hover:bg-gray-100"
-              title="Tài khoản">
-              {userName}
-              {/* Icon mũi tên nhỏ */}
+              className="flex items-center gap-1 px-3 py-2 rounded-lg text-sm text-gray-800 hover:bg-gray-100 transition"
+              title="Tài khoản"
+            >
+              <span className="font-medium">{userName}</span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                className="w-4 h-4 text-gray-500">
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.8}
+                stroke="currentColor"
+                className={`w-4 h-4 transform transition-transform duration-200 ${
+                  isProfileOpen ? "rotate-180" : "rotate-0"
+                } text-gray-500`}
+              >
                 <path
-                  fillRule="evenodd"
-                  d="M5.22 8.22a.75.75 0 011.06 0L10 11.94l3.72-3.72a.75.75 0 111.06 1.06l-4.25 4.25a.75.75 0 01-1.06 0L5.22 9.28a.75.75 0 010-1.06z"
-                  clipRule="evenodd"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M19.5 9.75l-7.5 7.5-7.5-7.5"
                 />
               </svg>
             </button>
