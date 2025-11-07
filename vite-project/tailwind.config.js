@@ -9,3 +9,14 @@ export default {
   },
   plugins: [],
 }
+
+// tailwind.config.js
+module.exports = {
+  safelist: [
+    'bg-red-50', 'bg-purple-50', 'bg-blue-50', 'bg-orange-50', 'bg-green-50', 'bg-indigo-50', 'bg-gray-50',
+    'border-red-300', 'border-purple-300', 'border-blue-300', 'border-orange-300', 'border-green-300', 'border-indigo-300', 'border-gray-300',
+    'bg-red-200', 'bg-purple-200', 'bg-blue-200', 'bg-orange-200', 'bg-green-200', 'bg-indigo-200', 'bg-gray-200',
+    'text-red-800', 'text-purple-800', 'text-blue-800', 'text-orange-800', 'text-green-800', 'text-indigo-800', 'text-gray-800',
+  ],
+};
+

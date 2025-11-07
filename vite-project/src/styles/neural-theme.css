@@ -1,0 +1,99 @@
+/* === NEURAL DARK THEME — Áp dụng cho toàn bộ app === */
+body {
+  background-color: #0b0e17;
+  color: #e5e7eb;
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+
+.neural-app {
+  position: relative;
+  min-height: 100vh;
+  background: radial-gradient(circle at 30% 30%, rgba(82, 0, 255, 0.15), transparent 60%),
+              radial-gradient(circle at 70% 60%, rgba(0, 255, 255, 0.1), transparent 70%),
+              #0b0e17;
+  overflow: hidden;
+}
+
+/* Hiệu ứng glow động (ánh sáng tím xanh) */
+.neural-app::before,
+.neural-app::after {
+  content: "";
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(128,0,255,0.25) 0%, transparent 70%);
+  filter: blur(120px);
+  animation: float 10s ease-in-out infinite alternate;
+  z-index: 0;
+}
+.neural-app::before { top: 10%; left: 10%; }
+.neural-app::after { bottom: 15%; right: 10%; }
+
+@keyframes float {
+  from { transform: translateY(-10px); opacity: 0.8; }
+  to { transform: translateY(10px); opacity: 0.5; }
+}
+
+/* Card trong suốt có viền sáng */
+.neural-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.15);
+  color: #e5e7eb;
+  padding: 1.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* Button Neural Gradient */
+.neural-button {
+  background: linear-gradient(90deg, #6366f1, #8b5cf6);
+  color: white;
+  font-weight: 600;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.neural-button:hover {
+  box-shadow: 0 0 15px rgba(99,102,241,0.6);
+  transform: translateY(-1px);
+}
+
+/* Header và Footer */
+header, footer {
+  background: rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+}
+
+.text-subtle {
+  color: #9ca3af;
+}
+
+/* Table, List, Task, v.v. */
+.table-dark th, .table-dark td {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Khi hover task hoặc card */
+.hover-glow:hover {
+  box-shadow: 0 0 20px rgba(99,102,241,0.3);
+  transform: translateY(-2px);
+}
+
+/* Scrollbar tùy chỉnh */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.1);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,0.2);
+}
