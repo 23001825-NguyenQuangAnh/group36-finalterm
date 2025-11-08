@@ -1,15 +1,15 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 
 /**
  * LandingPage — Trang chào mừng người dùng.
- * Khi nhấn nút "Đăng nhập", chuyển hướng sang /login
+ *
+ * Hiển thị giới thiệu và nút đăng nhập demo.
+ * Nhận prop:
+ *  - onLogin: hàm callback gọi khi người dùng nhấn nút đăng nhập.
  */
-export default function LandingPage() {
-  const navigate = useNavigate();
-
+export default function LandingPage({ onLogin }) {
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50 text-gray-800 ">
+    <div className="min-h-screen flex flex-col bg-gray-50 text-gray-800">
       {/* Header tối giản */}
       <header className="flex items-center justify-between px-6 py-4 bg-white border-b shadow-sm">
         {/* Logo + tiêu đề */}
@@ -22,7 +22,7 @@ export default function LandingPage() {
 
         {/* Nút đăng nhập (góc phải) */}
         <button
-          onClick={() => navigate("/login")}
+          onClick={onLogin}
           className="px-4 py-2 bg-blue-600 text-white rounded font-medium shadow hover:bg-blue-700 transition duration-300"
           aria-label="Đăng nhập demo"
         >
@@ -57,7 +57,7 @@ export default function LandingPage() {
 
         {/* Nút hành động */}
         <button
-          onClick={() => navigate("/login")}
+          onClick={onLogin}
           className="mt-6 px-6 py-3 bg-blue-600 text-white rounded-lg text-lg font-semibold shadow-lg hover:bg-blue-700 transition duration-300"
         >
           Bắt đầu ngay (Đăng nhập Demo)
