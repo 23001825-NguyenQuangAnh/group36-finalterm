@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./App.css";
-import "./styles/neural-theme.css"; // 🎨 import theme
+import "./styles/neural-theme.css";
 import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 
 import Header from "./components/Header";
@@ -17,6 +17,7 @@ import { handleSyncDemo, toggleLogin } from "./utils/auth";
 export default function App() {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showLoginPage, setShowLoginPage] = useState(false);
   const { tasks, setTasks } = useTasks(isLoggedIn);
   const navigate = useNavigate();
 
@@ -26,13 +27,35 @@ export default function App() {
       setTasks([]);
     }
   };
+  <Header
+  userName={localStorage.getItem("awm_user_name") || "Người dùng"}
+  activeTab={activeTab}
+  setActiveTab={setActiveTab}
+  onSync={handleSyncDemo}
+  isLoggedIn={isLoggedIn}
+  onLoginLogout={() => toggleLogin(setIsLoggedIn)}
+  />
 
-  // Sau khi login thành công
-  const handleLoginSuccess = () => {
-    toggleLogin(setIsLoggedIn);
-    navigate("/app");
-  };
 
+  // Nếu CHƯA đăng nhập
+  if (!isLoggedIn) {
+    // Nếu chưa ấn “Đăng nhập” → hiện LandingPage
+    if (!showLoginPage) {
+      return <LandingPage onLogin={() => setShowLoginPage(true)} />;
+    }
+
+    // Nếu đã ấn → hiện LoginPage
+    return (
+      <LoginPage
+        onAuthSuccess={() => {
+          toggleLogin(setIsLoggedIn);
+          setShowLoginPage(false);
+        }}
+      />
+    );
+  }
+
+  // Nếu ĐÃ đăng nhập → hiện App chính
   return (
     <div className="neural-app text-gray-100 min-h-screen">
       <Routes>
