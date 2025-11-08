@@ -86,7 +86,7 @@ export default function Dashboard({ tasks, setTasks }) {
   // === LỊCH TUẦN ===
   const daysOfWeek = ['MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY','SUNDAY'];
   const colors = [
-    'red','purple','blue','orange','green','indigo','gray'
+    'red','purple','blue','orange','green','indigo','yellow'
   ];
   const weekDates = useMemo(() => {
     const start = getStartOfWeek(currentDate);
@@ -134,8 +134,8 @@ export default function Dashboard({ tasks, setTasks }) {
       {/* HEADER */}
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-3xl font-bold text-gray-800">Dashboard</h2>
-          <p className="text-sm text-gray-500 mt-1">
+          <h2 className="text-3xl font-bold text-yellow-800">Dashboard</h2>
+          <p className="text-sm text-yellow-500 mt-1">
             Theo dõi và quản lý công việc thông minh ✨
           </p>
         </div>
@@ -208,7 +208,7 @@ export default function Dashboard({ tasks, setTasks }) {
         <div className="flex justify-between items-center mb-3">
           <button
             onClick={() => setCurrentDate(addDays(currentDate, -7))}
-            className="px-3 py-1 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 text-sm"
+            className="px-3 py-1 bg-yellow-200 text-gray-700 rounded hover:bg-gray-300 text-sm"
           >
             &lt; Tuần trước
           </button>
@@ -218,7 +218,7 @@ export default function Dashboard({ tasks, setTasks }) {
           </span>
           <button
             onClick={() => setCurrentDate(addDays(currentDate, 7))}
-            className="px-3 py-1 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 text-sm"
+            className="px-3 py-1 bg-yellow-200 text-gray-700 rounded hover:bg-gray-300 text-sm"
           >
             Tuần sau &gt;
           </button>
@@ -260,13 +260,13 @@ export default function Dashboard({ tasks, setTasks }) {
                         >
                           {task.title}
                         </div>
-                        <div className="text-xs text-gray-500">
+                        <div className="text-xs text-yellow-500">
                           {CATEGORIES.find((c) => c.id === task.categoryId)?.name || 'N/A'}
                         </div>
                       </div>
                     ))
                   ) : (
-                    <div className="text-xs text-gray-400 text-center italic mt-2">
+                    <div className="text-xs text-yellow-400 text-center italic mt-2">
                       Không có task
                     </div>
                   )}
