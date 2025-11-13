@@ -96,12 +96,6 @@ export default function LoginPage({ onAuthSuccess }) {
           </span>
         </p>
 
-        <button
-          onClick={onAuthSuccess}
-          className="w-full mt-6 bg-gray-100 text-gray-700 py-2 rounded-lg font-medium hover:bg-gray-200 transition"
-        >
-          Dùng thử không cần tài khoản
-        </button>
       </div>
     </div>
   );
