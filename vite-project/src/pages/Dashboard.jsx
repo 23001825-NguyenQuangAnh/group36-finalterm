@@ -1,9 +1,11 @@
-import React, { useState, useMemo } from 'react';
+// Dashboard.jsx
+import React, { useState, useMemo, useEffect } from 'react';
 import { CATEGORIES } from '../constants.js';
 import AddTaskModal from '../components/AddTaskModal.jsx';
 import TaskCard from '../components/TaskCard.jsx';
 import EditTaskModal from '../components/EditTaskModal.jsx';
 import { uid } from '../utils.js';
+import toast from 'react-hot-toast';
 
 // === HÀM TRỢ GIÚP NGÀY THÁNG ===
 const getStartOfWeek = (date) => {
@@ -28,6 +30,7 @@ const isSameDay = (d1, d2) => {
     date1.getDate() === date2.getDate()
   );
 };
+const toTimestamp = (d) => (d ? new Date(d).getTime() : null);
 
 // === DASHBOARD COMPONENT ===
 export default function Dashboard({ tasks, setTasks }) {
@@ -36,6 +39,25 @@ export default function Dashboard({ tasks, setTasks }) {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [editingTask, setEditingTask] = useState(null);
   const [currentDate, setCurrentDate] = useState(new Date());
+
+  // state lưu các task đã được thông báo (tránh spam)
+  // lưu dạng object: { [taskId]: true }
+  const [notifiedTasks, setNotifiedTasks] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('notifiedTasks') || '{}');
+    } catch (e) {
+      return {};
+    }
+  });
+
+  // đồng bộ notifiedTasks vào localStorage
+  useEffect(() => {
+    try {
+      localStorage.setItem('notifiedTasks', JSON.stringify(notifiedTasks));
+    } catch (e) {
+      // ignore
+    }
+  }, [notifiedTasks]);
 
   // === QUẢN LÝ TASK ===
   const addTask = (title, description, categoryId, deadline, duration, importance) => {
@@ -56,9 +78,17 @@ export default function Dashboard({ tasks, setTasks }) {
 
   const updateTask = (id, data) =>
     setTasks((t) => t.map((task) => (task.id === id ? { ...task, ...data } : task)));
+
   const moveTask = (task, status) => updateTask(task.id, { status });
-  const completeTask = (task) => updateTask(task.id, { status: 'completed' });
-  const restoreTask = (task) => updateTask(task.id, { status: 'pending' });
+
+  // khi hoàn thành -> set trạng thái + completedAt
+  const completeTask = (task) =>
+    updateTask(task.id, {
+      status: 'completed',
+      completedAt: Date.now(),
+    });
+
+  const restoreTask = (task) => updateTask(task.id, { status: 'pending', completedAt: null });
 
   // === MODAL ===
   const openEdit = (task) => setEditingTask(task);
@@ -102,6 +132,75 @@ export default function Dashboard({ tasks, setTasks }) {
     return map;
   }, [tasks, weekDates]);
 
+  // === THÔNG BÁO: deadline < 24h và quá hạn ===
+  useEffect(() => {
+    const now = Date.now();
+    const ONE_DAY = 24 * 60 * 60 * 1000;
+
+    tasks.forEach((task) => {
+      if (!task || task.status === 'completed') return;
+
+      if (!task.deadline) return;
+
+      const deadlineTs = toTimestamp(task.deadline);
+      if (!deadlineTs) return;
+
+      const timeLeft = deadlineTs - now;
+
+      // nếu đã thông báo rồi -> bỏ qua
+      if (notifiedTasks[task.id]) return;
+
+      // sắp đến hạn trong 24h
+      if (timeLeft > 0 && timeLeft <= ONE_DAY) {
+        toast(`⏳ "${task.title}" sẽ đến hạn trong vòng 24 giờ.`, {
+          icon: '⚠️',
+          duration: 7000,
+        });
+        setNotifiedTasks((prev) => ({ ...prev, [task.id]: true }));
+        return;
+      }
+
+      // đã quá hạn
+      if (timeLeft < 0) {
+        toast(`❗ "${task.title}" đã quá hạn.`, {
+          icon: '⛔',
+          duration: 7000,
+        });
+        setNotifiedTasks((prev) => ({ ...prev, [task.id]: true }));
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tasks]); // chỉ cần chạy khi tasks thay đổi
+
+  // === TỰ ĐỘNG XÓA TASK COMPLETED SAU 7 NGÀY ===
+  useEffect(() => {
+    const ONE_WEEK = 7 * 24 * 60 * 60 * 1000;
+    const now = Date.now();
+
+    // lọc và thông báo các task bị xóa
+    const filtered = tasks.filter((task) => {
+      if (task.status !== 'completed') return true;
+
+      const completedAt = task.completedAt || task.updatedAt || task.createdAt || 0;
+      const expired = now - completedAt >= ONE_WEEK;
+
+      if (expired) {
+        // toast thông báo xóa (một lần)
+        toast(`🗑️ "${task.title}" đã bị xóa vì đã hoàn thành hơn 7 ngày.`, {
+          icon: '🗑️',
+          duration: 5000,
+        });
+      }
+
+      return !expired;
+    });
+
+    if (filtered.length !== tasks.length) {
+      setTasks(filtered);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tasks]);
+
   // === CATEGORY TAB ===
   const CategoryTab = ({ name, active, onClick }) => (
     <button
@@ -134,7 +233,7 @@ export default function Dashboard({ tasks, setTasks }) {
       {/* HEADER */}
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-3xl font-bold text-yellow-800">Dashboard</h2>
+          <h2 className="text-3xl font-bold text-black-800">Dashboard</h2>
           <p className="text-sm text-yellow-500 mt-1">
             Theo dõi và quản lý công việc thông minh ✨
           </p>

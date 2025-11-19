@@ -19,15 +19,6 @@ export default function LandingPage({ onLogin }) {
           </div>
           <h1 className="text-xl font-semibold">AI Work Manager</h1>
         </div>
-
-        {/* Nút đăng nhập (góc phải) */}
-        <button
-          onClick={onLogin}
-          className="px-4 py-2 bg-blue-600 text-white rounded font-medium shadow hover:bg-blue-700 transition duration-300"
-          aria-label="Đăng nhập demo"
-        >
-          Đăng nhập
-        </button>
       </header>
 
       {/*  Nội dung chính */}
@@ -60,7 +51,7 @@ export default function LandingPage({ onLogin }) {
           onClick={onLogin}
           className="mt-6 px-6 py-3 bg-blue-600 text-white rounded-lg text-lg font-semibold shadow-lg hover:bg-blue-700 transition duration-300"
         >
-          Bắt đầu ngay (Đăng nhập Demo)
+          Bắt đầu ngay
         </button>
       </main>
 
