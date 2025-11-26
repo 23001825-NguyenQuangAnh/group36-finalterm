@@ -1,5 +1,7 @@
 /* ===== RESET TOÀN CỤC ===== */
-html, body, #root {
+html,
+body,
+#root {
   width: 100%;
   height: 100%;
   margin: 0;
@@ -41,28 +43,8 @@ body {
 
 /* ===== HEADING ===== */
 h1 {
-  font-size: 3.0em;
+  font-size: 3em;
   line-height: 1.1;
-}
-
-/* ===== BUTTON ===== */
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #6593f0;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
 }
 
 /* ===== LIGHT MODE ===== */

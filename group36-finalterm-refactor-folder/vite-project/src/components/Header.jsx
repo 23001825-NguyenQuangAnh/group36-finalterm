@@ -49,29 +49,24 @@ export default function Header({
     }
   };
 
-  // Click outside close menus
+  // Close menus when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
         profileMenuRef.current &&
         !profileMenuRef.current.contains(event.target)
-      ) {
+      )
         setIsProfileOpen(false);
-      }
 
-      if (
-        notifMenuRef.current &&
-        !notifMenuRef.current.contains(event.target)
-      ) {
+      if (notifMenuRef.current && !notifMenuRef.current.contains(event.target))
         setIsNotificationsOpen(false);
-      }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Load Notifications (chống spam)
+  // Load Notifications
   const loadNotifications = async () => {
     if (isLoadingRef.current) return;
     isLoadingRef.current = true;
@@ -91,25 +86,19 @@ export default function Header({
     }
   };
 
-  // Open Notif menu
   const handleNotifClick = () => {
-    setIsNotificationsOpen((s) => !s);
+    setIsNotificationsOpen(!isNotificationsOpen);
     setIsProfileOpen(false);
     loadNotifications();
   };
 
-  // Mark as read (UX: đánh dấu ngay)
   const handleReadNotification = async (id) => {
-    // cập nhật ngay lập tức trên UI
     setNotifications((prev) =>
       prev.map((n) => (n.id === id ? { ...n, isRead: true } : n))
     );
-
-    // gọi API sau
     await markAsRead(id);
   };
 
-  // Load noti khi user đăng nhập
   useEffect(() => {
     loadNotifications();
   }, [loggedInUserId]);
@@ -122,24 +111,26 @@ export default function Header({
   ];
 
   return (
-    <header className="flex items-center justify-between px-6 py-4 bg-white border-b shadow-sm">
-      {/* Left */}
+    <header className="flex items-center justify-between px-6 py-3 bg-white/80 backdrop-blur-md border-b shadow-sm">
+      {/* LEFT */}
       <div className="flex items-center gap-4">
-        <div className="w-10 h-10 bg-gray-100 rounded flex items-center justify-center text-xl font-semibold">
+        <div className="w-9 h-9 rounded-lg bg-blue-600 text-white flex items-center justify-center font-semibold shadow-sm select-none">
           AI
         </div>
-        <h1 className="text-xl font-semibold">AI Work Manager</h1>
 
-        {/* Navigation */}
-        <nav className="ml-6 flex gap-2 text-sm text-gray-600">
+        <h1 className="text-lg font-semibold text-gray-800 tracking-tight">
+          AI Work Manager
+        </h1>
+
+        <nav className="ml-6 flex gap-1 text-sm font-medium">
           {navItems.map((item) => (
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
-              className={`px-3 py-2 rounded-lg transition-colors ${
+              className={`px-3 py-2 rounded-md transition-all ${
                 activeTab === item.id
-                  ? "bg-blue-100 text-blue-700"
-                  : "hover:bg-gray-100"
+                  ? "bg-blue-600 text-white shadow-sm"
+                  : "text-gray-600 hover:bg-gray-100"
               }`}
             >
               {item.label}
@@ -148,35 +139,34 @@ export default function Header({
         </nav>
       </div>
 
-      {/* Right side */}
-      <div className="flex items-center gap-3">
-        {/* Notifications */}
+      {/* RIGHT */}
+      <div className="flex items-center gap-4">
+        {/* NOTIFICATIONS */}
         <div className="relative" ref={notifMenuRef}>
           <button
             onClick={handleNotifClick}
-            className="p-2 rounded hover:bg-gray-100 relative"
-            title="Notifications"
+            className="relative p-2 rounded-md hover:bg-gray-100 transition"
           >
-            <span className="text-xl">🔔</span>
-
+            <span className="text-[20px]">🔔</span>
             {notifications.some((n) => !n.isRead) && (
-              <span className="absolute top-1 right-1 h-2 w-2 bg-red-500 rounded-full border border-white"></span>
+              <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full shadow"></span>
             )}
           </button>
 
-          {/* Dropdown */}
           {isNotificationsOpen && (
-            <div className="absolute top-full right-0 mt-2 w-72 bg-white rounded-md shadow-lg border z-10 py-1 max-h-80 overflow-y-auto animate-[fadeIn_0.15s_ease-out]">
-              <div className="px-4 py-2 font-semibold border-b">
-                Thông báo mới ({notifications.filter((n) => !n.isRead).length})
+            <div
+              className="absolute top-full right-0 mt-2 w-80 bg-white shadow-xl 
+              border border-gray-200 rounded-lg z-20 max-h-[350px] 
+              overflow-y-auto animate-fadeIn"
+            >
+              <div className="px-4 py-2 font-semibold text-gray-700 border-b sticky top-0 bg-white z-10">
+                Thông báo ({notifications.filter((n) => !n.isRead).length})
               </div>
 
               {loadingNotifications ? (
-                <div className="px-4 py-3 text-sm text-gray-500">
-                  Đang tải...
-                </div>
+                <div className="px-4 py-3 text-gray-500">Đang tải...</div>
               ) : notifications.length === 0 ? (
-                <div className="px-4 py-3 text-sm text-gray-500">
+                <div className="px-4 py-3 text-gray-500">
                   Không có thông báo 🎉
                 </div>
               ) : (
@@ -184,55 +174,45 @@ export default function Header({
                   <div
                     key={noti.id}
                     onClick={() => handleReadNotification(noti.id)}
-                    className={`px-4 py-2 text-sm cursor-pointer border-b hover:bg-gray-100 ${
+                    className={`px-4 py-2 cursor-pointer border-b 
+                    hover:bg-gray-100 transition ${
                       !noti.isRead ? "bg-yellow-50" : ""
                     }`}
                   >
-                    <p className="font-medium line-clamp-2">{noti.message}</p>
-                    <p
-                      className={`text-xs ${
-                        noti.isRead ? "text-gray-400" : "text-red-500"
-                      }`}
-                    >
+                    <p className="font-medium">{noti.message}</p>
+                    <p className="text-xs text-gray-400">
                       {new Date(noti.sentAt).toLocaleString("vi-VN")}
                     </p>
                   </div>
                 ))
               )}
-
-              <a
-                href="#"
-                onClick={(e) => e.preventDefault()}
-                className="block px-4 py-2 text-sm text-blue-600 text-center hover:bg-gray-100 border-t mt-1"
-              >
-                Xem tất cả
-              </a>
             </div>
           )}
         </div>
 
-        {/* Profile */}
+        {/* PROFILE */}
         {isLoggedIn ? (
           <div className="relative" ref={profileMenuRef}>
+            {/* FIXED PROFILE BUTTON (luôn nền trắng) */}
             <button
               onClick={() => {
-                setIsProfileOpen((s) => !s);
+                setIsProfileOpen(!isProfileOpen);
                 setIsNotificationsOpen(false);
               }}
-              className="flex items-center gap-1 px-3 py-2 rounded-lg text-sm text-gray-800 hover:bg-gray-100 transition"
-              title="Tài khoản"
+              className="flex items-center gap-2 px-3 py-2 
+              bg-white border border-gray-300 rounded-md 
+              text-gray-800 hover:bg-gray-100 shadow-sm transition"
             >
               <span className="font-medium">{displayName}</span>
 
               <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.8}
-                stroke="currentColor"
-                className={`w-4 h-4 transform transition-transform duration-200 ${
-                  isProfileOpen ? "rotate-180" : "rotate-0"
+                className={`w-4 h-4 transition-transform ${
+                  isProfileOpen ? "rotate-180" : ""
                 } text-gray-500`}
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={1.8}
+                viewBox="0 0 24 24"
               >
                 <path
                   strokeLinecap="round"
@@ -243,28 +223,30 @@ export default function Header({
             </button>
 
             {isProfileOpen && (
-              <div className="absolute top-full right-0 mt-2 w-48 bg-white rounded-md shadow-lg border z-10 py-1 animate-[fadeIn_0.15s_ease-out]">
-                <a
-                  href="#"
-                  onClick={(e) => e.preventDefault()}
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              <div
+                className="absolute right-0 mt-2 w-48 bg-white shadow-xl 
+                border border-gray-200 rounded-lg py-2 z-20 animate-fadeIn"
+              >
+                <button
+                  className="block w-full text-left px-4 py-2 text-sm 
+                  text-gray-700 hover:bg-gray-100 transition-colors"
                 >
-                  Hồ sơ (Profile)
-                </a>
+                  Hồ sơ cá nhân
+                </button>
 
-                <a
-                  href="#"
-                  onClick={(e) => e.preventDefault()}
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                <button
+                  className="block w-full text-left px-4 py-2 text-sm 
+                  text-gray-700 hover:bg-gray-100 transition-colors"
                 >
                   Cài đặt tài khoản
-                </a>
+                </button>
 
-                <div className="border-t my-1"></div>
+                <div className="border-t my-1 border-gray-200"></div>
 
                 <button
                   onClick={handleLogoutClick}
-                  className="w-full text-left block px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                  className="block w-full text-left px-4 py-2 text-sm 
+                  text-red-600 hover:bg-red-50 transition-colors"
                 >
                   Đăng xuất
                 </button>
@@ -274,7 +256,8 @@ export default function Header({
         ) : (
           <button
             onClick={onLoginLogout}
-            className="px-3 py-2 bg-blue-600 text-white rounded"
+            className="px-3 py-2 bg-blue-600 text-white rounded-md 
+            shadow hover:bg-blue-700 transition"
           >
             Đăng nhập
           </button>
