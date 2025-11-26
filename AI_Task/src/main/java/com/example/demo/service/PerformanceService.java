@@ -1,5 +1,7 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.response.ChartDataResponse;
+import com.example.demo.dto.response.ChartStatusCounts;
 import com.example.demo.dto.response.PerformanceOverviewResponse;
 import com.example.demo.enums.TaskStatus;
 import com.example.demo.repository.TaskRepository;
@@ -9,6 +11,10 @@ import org.springframework.stereotype.Service;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -71,4 +77,42 @@ public class PerformanceService {
                 productivityTrend
         );
     }
+    public ChartDataResponse getChartData() {
+
+        // ===== 1) DAILY COMPLETED =====
+        // Raw result: List<Object[]> with 1 row and 7 columns
+        Object[] rawDaily = taskRepository.countCompletedEachDayOfWeekRaw().get(0);
+
+        // Convert Object[] -> List<Integer>
+        List<Integer> dailyCompleted = new ArrayList<>();
+        for (Object o : rawDaily) {
+            dailyCompleted.add(o == null ? 0 : ((Number) o).intValue());
+        }
+
+        // ===== 2) STATUS COUNTS =====
+        int completed = taskRepository.countByStatus(TaskStatus.COMPLETED);
+        int inProgress = taskRepository.countByStatus(TaskStatus.IN_PROGRESS);
+        int pending = taskRepository.countByStatus(TaskStatus.PENDING);
+
+        ChartStatusCounts status = new ChartStatusCounts(
+                completed,
+                inProgress,
+                pending
+        );
+
+        // ===== 3) WEEKLY COMPLETION RATE =====
+        List<Number> weeklyRaw = taskRepository.getWeeklyCompletionRateRaw();
+
+        List<Integer> weeklyRate = weeklyRaw.stream()
+                .map(n -> n == null ? 0 : n.intValue())
+                .toList();
+
+        // ===== 4) RETURN DTO =====
+        return new ChartDataResponse(
+                dailyCompleted,
+                status,
+                weeklyRate
+        );
+    }
+
 }

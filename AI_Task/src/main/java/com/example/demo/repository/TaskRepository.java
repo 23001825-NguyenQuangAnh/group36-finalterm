@@ -55,4 +55,31 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
             TaskStatus status
     );
     List<Task> findByUserIdAndDeadlineBetween(Long userId, LocalDateTime startOfDay, LocalDateTime endOfDay);
+
+    @Query("""
+    SELECT 
+        SUM(CASE WHEN DAYOFWEEK(t.createdAt) = 2 AND t.status = 'COMPLETED' THEN 1 ELSE 0 END),
+        SUM(CASE WHEN DAYOFWEEK(t.createdAt) = 3 AND t.status = 'COMPLETED' THEN 1 ELSE 0 END),
+        SUM(CASE WHEN DAYOFWEEK(t.createdAt) = 4 AND t.status = 'COMPLETED' THEN 1 ELSE 0 END),
+        SUM(CASE WHEN DAYOFWEEK(t.createdAt) = 5 AND t.status = 'COMPLETED' THEN 1 ELSE 0 END),
+        SUM(CASE WHEN DAYOFWEEK(t.createdAt) = 6 AND t.status = 'COMPLETED' THEN 1 ELSE 0 END),
+        SUM(CASE WHEN DAYOFWEEK(t.createdAt) = 7 AND t.status = 'COMPLETED' THEN 1 ELSE 0 END),
+        SUM(CASE WHEN DAYOFWEEK(t.createdAt) = 1 AND t.status = 'COMPLETED' THEN 1 ELSE 0 END)
+    FROM Task t
+""")
+    List<Object[]> countCompletedEachDayOfWeekRaw();
+
+
+    @Query("""
+    SELECT 
+        ROUND(100.0 * SUM(CASE WHEN t.status = 'COMPLETED' THEN 1 ELSE 0 END) / COUNT(*))
+    FROM Task t
+    GROUP BY WEEK(t.createdAt)
+    ORDER BY WEEK(t.createdAt) DESC
+    LIMIT 4
+""")
+    List<Number> getWeeklyCompletionRateRaw();
+
+    int countByStatus(TaskStatus status);
+
 }
