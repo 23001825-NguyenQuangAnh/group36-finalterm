@@ -127,11 +127,12 @@ export default function Header({
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
-              className={`px-3 py-2 rounded-md transition-all ${
-                activeTab === item.id
-                  ? "bg-blue-600 text-white shadow-sm"
-                  : "text-gray-600 hover:bg-gray-100"
-              }`}
+              className={`px-3 py-2 rounded-md transition-all cursor-pointer
+${
+  activeTab === item.id
+    ? "bg-blue-600 text-white shadow-sm"
+    : "text-gray-600 hover:bg-gray-100"
+}`}
             >
               {item.label}
             </button>
@@ -145,7 +146,8 @@ export default function Header({
         <div className="relative" ref={notifMenuRef}>
           <button
             onClick={handleNotifClick}
-            className="relative p-2 rounded-md hover:bg-gray-100 transition"
+            className="relative p-2 rounded-md hover:bg-gray-100 transition cursor-pointer
+"
           >
             <span className="text-[20px]">🔔</span>
             {notifications.some((n) => !n.isRead) && (
@@ -201,7 +203,8 @@ export default function Header({
               }}
               className="flex items-center gap-2 px-3 py-2 
               bg-white border border-gray-300 rounded-md 
-              text-gray-800 hover:bg-gray-100 shadow-sm transition"
+              text-gray-800 hover:bg-gray-100 shadow-sm transition cursor-pointer
+"
             >
               <span className="font-medium">{displayName}</span>
 
@@ -229,14 +232,16 @@ export default function Header({
               >
                 <button
                   className="block w-full text-left px-4 py-2 text-sm 
-                  text-gray-700 hover:bg-gray-100 transition-colors"
+                  text-gray-700 hover:bg-gray-100 transition-colors cursor-pointer
+"
                 >
                   Hồ sơ cá nhân
                 </button>
 
                 <button
                   className="block w-full text-left px-4 py-2 text-sm 
-                  text-gray-700 hover:bg-gray-100 transition-colors"
+                  text-gray-700 hover:bg-gray-100 transition-colors cursor-pointer
+"
                 >
                   Cài đặt tài khoản
                 </button>
@@ -246,7 +251,8 @@ export default function Header({
                 <button
                   onClick={handleLogoutClick}
                   className="block w-full text-left px-4 py-2 text-sm 
-                  text-red-600 hover:bg-red-50 transition-colors"
+                  text-red-600 hover:bg-red-50 transition-colors cursor-pointer
+"
                 >
                   Đăng xuất
                 </button>

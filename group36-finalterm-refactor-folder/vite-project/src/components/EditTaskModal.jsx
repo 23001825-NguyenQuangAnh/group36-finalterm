@@ -24,9 +24,7 @@ function EditTaskModal({ task, onUpdateTask, onClose, categories }) {
     )}:${String(d.getMinutes()).padStart(2, "0")}:00`;
   };
 
-  // ===================================================
-  // ⭐ LOAD TASK BAN ĐẦU
-  // ===================================================
+  // LOAD TASK BAN ĐẦU
   useEffect(() => {
     if (task) {
       setTitle(task.title || "");
@@ -39,9 +37,7 @@ function EditTaskModal({ task, onUpdateTask, onClose, categories }) {
     }
   }, [task]);
 
-  // ===================================================
-  // 🔥 SUBMIT FORM
-  // ===================================================
+  // SUBMIT
   const handleSubmit = () => {
     if (!title.trim()) {
       toast.error("Vui lòng nhập tên task!");
@@ -73,11 +69,11 @@ function EditTaskModal({ task, onUpdateTask, onClose, categories }) {
   return (
     <div
       className="fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center p-4"
-      onClick={onClose} // ⭐ đóng modal khi click ra ngoài
+      onClick={onClose}
     >
       <div
         className="bg-white rounded-lg shadow-xl p-6 w-full max-w-md relative z-50"
-        onClick={(e) => e.stopPropagation()} // ⭐ tránh tắt khi click trong modal
+        onClick={(e) => e.stopPropagation()}
       >
         <h3 className="text-lg font-medium mb-4">Chỉnh sửa Task</h3>
 
@@ -99,7 +95,7 @@ function EditTaskModal({ task, onUpdateTask, onClose, categories }) {
             <select
               value={categoryId || ""}
               onChange={(e) => setCategoryId(Number(e.target.value))}
-              className="px-3 py-2 border rounded w-full bg-white outline-none"
+              className="px-3 py-2 border rounded w-full bg-white outline-none cursor-pointer"
             >
               <option value="">-- Chọn phân loại --</option>
               {categories.map((cat) => (
@@ -128,7 +124,7 @@ function EditTaskModal({ task, onUpdateTask, onClose, categories }) {
             <DatePicker
               selected={deadline}
               onChange={(date) => setDeadline(date)}
-              className="px-3 py-2 border rounded w-full outline-none bg-white"
+              className="px-3 py-2 border rounded w-full outline-none bg-white cursor-pointer"
               placeholderText="Chọn ngày..."
               showTimeSelect
               timeIntervals={15}
@@ -145,7 +141,7 @@ function EditTaskModal({ task, onUpdateTask, onClose, categories }) {
             <select
               value={priorityLevel}
               onChange={(e) => setPriorityLevel(e.target.value)}
-              className="px-3 py-2 border rounded w-full bg-white outline-none"
+              className="px-3 py-2 border rounded w-full bg-white outline-none cursor-pointer"
             >
               <option value="NORMAL">NORMAL</option>
               <option value="HIGH">HIGH</option>
@@ -172,14 +168,14 @@ function EditTaskModal({ task, onUpdateTask, onClose, categories }) {
         <div className="flex justify-end gap-3 mt-6">
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300"
+            className="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 cursor-pointer"
           >
             Hủy
           </button>
 
           <button
             onClick={handleSubmit}
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 cursor-pointer"
           >
             Cập nhật
           </button>

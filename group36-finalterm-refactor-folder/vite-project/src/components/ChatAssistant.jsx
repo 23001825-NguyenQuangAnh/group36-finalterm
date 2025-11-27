@@ -34,7 +34,6 @@ export default function ChatAssistant({ onTaskCreated }) {
   const sendMessage = async () => {
     if (!input.trim()) return;
 
-    // Thêm user message vào
     setMessages((prev) => [...prev, { from: "user", text: input }]);
     setLoading(true);
 
@@ -42,18 +41,14 @@ export default function ChatAssistant({ onTaskCreated }) {
       const res = await chatWithAssistant(input, userId);
       const data = res.data;
 
-      // Bot trả lời
+      // Bot message
       setMessages((prev) => [...prev, { from: "bot", text: data.reply }]);
 
-      // ======================================================
-      // ⭐ 1) SHOW_TODAY_TASKS
-      // ======================================================
+      // ⭐ SHOW_TODAY_TASKS
       if (data.action === "SHOW_TODAY_TASKS") {
         try {
           const resToday = await getTodayTasks(userId);
           let tasks = resToday.data.result;
-
-          // Lọc COMPLETED
           tasks = tasks.filter((t) => t.status?.toUpperCase() !== "COMPLETED");
 
           if (!tasks || tasks.length === 0) {
@@ -73,7 +68,7 @@ export default function ChatAssistant({ onTaskCreated }) {
 
             setMessages((prev) => [...prev, { from: "bot", text: formatted }]);
           }
-        } catch (err) {
+        } catch {
           setMessages((prev) => [
             ...prev,
             { from: "bot", text: "Không thể tải danh sách task hôm nay 😢" },
@@ -85,15 +80,11 @@ export default function ChatAssistant({ onTaskCreated }) {
         return;
       }
 
-      // ======================================================
-      // ⭐ 2) SHOW_OVERDUE_TASKS
-      // ======================================================
+      // ⭐ SHOW_OVERDUE_TASKS
       if (data.action === "SHOW_OVERDUE_TASKS") {
         try {
           const resOverdue = await getOverdueTasks(userId);
           let tasks = resOverdue.data.result;
-
-          // Lọc COMPLETED
           tasks = tasks.filter((t) => t.status?.toUpperCase() !== "COMPLETED");
 
           if (!tasks || tasks.length === 0) {
@@ -113,7 +104,7 @@ export default function ChatAssistant({ onTaskCreated }) {
 
             setMessages((prev) => [...prev, { from: "bot", text: formatted }]);
           }
-        } catch (err) {
+        } catch {
           setMessages((prev) => [
             ...prev,
             { from: "bot", text: "Không thể tải task quá hạn 😢" },
@@ -125,9 +116,7 @@ export default function ChatAssistant({ onTaskCreated }) {
         return;
       }
 
-      // ======================================================
-      // ⭐ 3) CREATE_TASK suggestions (NLP)
-      // ======================================================
+      // ⭐ CREATE_TASK (NLP suggestion)
       if (data.action === "CREATE_TASK" && data.task) {
         const priorityLevel =
           data.task.priorityScore >= 0.5 ? "HIGH" : "NORMAL";
@@ -147,7 +136,7 @@ export default function ChatAssistant({ onTaskCreated }) {
   };
 
   // ======================================================
-  // ⭐ Xác nhận tạo task từ gợi ý NLP
+  // ⭐ Confirm creating task from AI suggestion
   // ======================================================
   const handleCreateFromSuggestion = async () => {
     if (!pendingTask) return;
@@ -218,6 +207,7 @@ export default function ChatAssistant({ onTaskCreated }) {
           <div>
             - <strong>Duration:</strong> {pendingTask.durationMinutes} phút
           </div>
+
           <div>
             - <strong>Priority:</strong>{" "}
             <span
@@ -233,7 +223,7 @@ export default function ChatAssistant({ onTaskCreated }) {
 
           <button
             onClick={handleCreateFromSuggestion}
-            className="mt-2 px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700"
+            className="mt-2 px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 cursor-pointer"
           >
             Tạo task từ gợi ý
           </button>
@@ -251,7 +241,7 @@ export default function ChatAssistant({ onTaskCreated }) {
         />
         <button
           onClick={sendMessage}
-          className="px-4 py-2 bg-green-600 text-white rounded-lg text-sm hover:bg-green-700"
+          className="px-4 py-2 bg-green-600 text-white rounded-lg text-sm hover:bg-green-700 cursor-pointer"
         >
           Gửi
         </button>

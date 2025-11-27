@@ -243,7 +243,7 @@ export default function Dashboard() {
   const completed = processedTasks.filter((t) => t.status === "COMPLETED");
 
   // ===========================
-  // WEEK VIEW
+  // WEEK DATA
   // ===========================
   const daysOfWeek = [
     "MONDAY",
@@ -279,12 +279,12 @@ export default function Dashboard() {
   }, [tasks, weekDates]);
 
   // ===========================
-  // CATEGORY TAB COMPONENT
+  // CATEGORY TAB
   // ===========================
   const CategoryTab = ({ name, active, onClick }) => (
     <button
       onClick={onClick}
-      className={`px-3 py-1 rounded-full text-sm transition whitespace-nowrap ${
+      className={`px-3 py-1 rounded-full text-sm transition whitespace-nowrap cursor-pointer ${
         active
           ? "bg-blue-600 text-white shadow transform scale-[1.02]"
           : "bg-gray-200 text-gray-700 hover:bg-gray-300"
@@ -328,7 +328,7 @@ export default function Dashboard() {
 
         <button
           onClick={() => setIsModalOpen(true)}
-          className="px-5 py-2.5 bg-blue-600 text-white rounded-xl font-medium shadow hover:bg-blue-700"
+          className="px-5 py-2.5 bg-blue-600 text-white rounded-xl font-medium shadow hover:bg-blue-700 cursor-pointer"
         >
           Thêm Task
         </button>
@@ -366,7 +366,7 @@ export default function Dashboard() {
               {title === "Completed" && (
                 <button
                   onClick={() => setShowCompleted(!showCompleted)}
-                  className="text-xs px-2 py-1 border rounded"
+                  className="text-xs px-2 py-1 border rounded cursor-pointer hover:bg-gray-100"
                 >
                   {showCompleted ? "Hide" : "Show"}
                 </button>
@@ -401,7 +401,7 @@ export default function Dashboard() {
         <div className="flex justify-between items-center mb-3">
           <button
             onClick={() => setCurrentDate(addDays(currentDate, -7))}
-            className="px-3 py-1 bg-yellow-200 text-gray-700 rounded hover:bg-yellow-300 text-sm"
+            className="px-3 py-1 bg-yellow-200 text-gray-700 rounded hover:bg-yellow-300 text-sm cursor-pointer"
           >
             &lt; Tuần trước
           </button>
@@ -413,7 +413,7 @@ export default function Dashboard() {
 
           <button
             onClick={() => setCurrentDate(addDays(currentDate, 7))}
-            className="px-3 py-1 bg-yellow-200 text-gray-700 rounded hover:bg-yellow-300 text-sm"
+            className="px-3 py-1 bg-yellow-200 text-gray-700 rounded hover:bg-yellow-300 text-sm cursor-pointer"
           >
             Tuần sau &gt;
           </button>
@@ -478,7 +478,7 @@ export default function Dashboard() {
       {/* FLOATING CHAT BUTTON */}
       <button
         onClick={() => setShowChat(true)}
-        className="fixed bottom-8 right-8 bg-blue-600 text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center text-3xl hover:bg-blue-700"
+        className="fixed bottom-8 right-8 bg-blue-600 text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center text-3xl hover:bg-blue-700 cursor-pointer"
       >
         💬
       </button>
@@ -490,7 +490,7 @@ export default function Dashboard() {
             <h3 className="font-semibold text-lg">Assistant AI 🤖</h3>
             <button
               onClick={() => setShowChat(false)}
-              className="text-gray-600 hover:text-gray-900 text-xl"
+              className="text-gray-600 hover:text-gray-900 text-xl cursor-pointer"
             >
               ✖
             </button>
