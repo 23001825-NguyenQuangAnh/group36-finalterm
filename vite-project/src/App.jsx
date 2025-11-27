@@ -26,11 +26,8 @@ export default function App() {
     }
   };
 
-  // ============================
-  // 1) Người dùng CHƯA đăng nhập
-  // ============================
   if (!isLoggedIn) {
-    // Hiện LandingPage trước
+    // LandingPage 
     if (!showLoginPage) {
       return (
         <>
@@ -54,12 +51,9 @@ export default function App() {
     );
   }
 
-  // ============================
-  // 2) Người dùng ĐÃ đăng nhập
-  // ============================
   return (
     <div className="min-h-screen bg-gray-50 text-gray-800">
-      {/* Toaster đặt ở đây để toàn app đều dùng được */}
+      {/* Toaster */}
       <Toaster position="top-right" />
 
       {/* Header */}
