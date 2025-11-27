@@ -3,7 +3,11 @@ import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, classification_report
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+
+# ⭐ thêm import để vẽ biểu đồ
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 from training.preprocessing import build_text
 from training.utils import get_data_path, save_model
@@ -11,7 +15,7 @@ from training.utils import get_data_path, save_model
 
 def main():
     # 1. Đọc dữ liệu
-    df = pd.read_excel(get_data_path("dataset.xlsx"))
+    df = pd.read_excel(get_data_path("testdata.xlsx"))
     # đảm bảo có đủ 3 cột chính
     df = df.dropna(subset=["title", "description", "categoryName"])
 
@@ -47,6 +51,25 @@ def main():
     y_pred = clf.predict(X_test)
     print("🔎 Category accuracy:", accuracy_score(y_test, y_pred))
     print(classification_report(y_test, y_pred))
+
+    # ⭐ CHỈ THÊM PHẦN NÀY – VẼ CONFUSION MATRIX
+    cm = confusion_matrix(y_test, y_pred)
+    labels = sorted(list(set(y_test)))
+
+    plt.figure(figsize=(7, 5))
+    sns.heatmap(
+        cm,
+        annot=True,
+        fmt="d",
+        cmap="Blues",
+        xticklabels=labels,
+        yticklabels=labels
+    )
+    plt.title("Confusion Matrix")
+    plt.xlabel("Predicted")
+    plt.ylabel("Actual")
+    plt.tight_layout()
+    plt.show()
 
     # 7. Lưu vectorizer + model
     save_model(vectorizer, "tfidf_vectorizer.pkl")

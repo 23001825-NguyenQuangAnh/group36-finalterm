@@ -7,14 +7,16 @@ import re
 
 def next_weekday(start: datetime, weekday: int) -> datetime:
     """Tìm ngày thứ X tiếp theo (0=Monday)."""
+    # Tính số ngày cần cộng để tới đúng thứ trong tuần
     days_ahead = weekday - start.weekday()
-    if days_ahead <= 0:
+    if days_ahead <= 0:      # Nếu đã qua thứ đó → nhảy sang tuần sau
         days_ahead += 7
     return start + timedelta(days=days_ahead)
 
 
 def parse_time(text: str):
-    """Trả về (hour, minute) hoặc None."""
+    """Trả về (hour, minute) hoặc None.
+    Hỗ trợ nhiều định dạng giờ phổ biến trong tiếng Việt."""
     text = text.lower()
 
     # 1. dạng 7h, 19h, 7h30, 07:15
@@ -30,7 +32,7 @@ def parse_time(text: str):
 
     # 2. từ khóa thời gian chung
     if "sáng" in text:
-        return 9, 0
+        return 9, 0      # mặc định 9h sáng
     if "trưa" in text:
         return 12, 0
     if "chiều" in text:
@@ -46,17 +48,17 @@ def parse_time(text: str):
 # ==============================
 
 def parse_deadline(text: str) -> datetime | None:
-    """Phân tích thời gian tự nhiên tiếng Việt."""
+    """Phân tích thời gian tự nhiên tiếng Việt từ câu chat người dùng."""
     text = text.lower().strip()
     now = datetime.now()
 
-    # Default = hôm nay 17:00
+    # Default deadline = hôm nay 17:00 nếu không tìm được gì
     day = now
     hour = 17
     minute = 0
 
     # =============================
-    # 1. Ngày dạng số: 15/12
+    # 1. Ngày dạng số: 15/12 hoặc 15/12/2025
     # =============================
     m = re.search(r"(\d{1,2})/(\d{1,2})(?:/(\d{2,4}))?", text)
     if m:
@@ -65,7 +67,7 @@ def parse_deadline(text: str) -> datetime | None:
         day = datetime(year, mth, d)
     else:
         # =============================
-        # 2. Từ khóa về ngày
+        # 2. Từ khóa ngày tương đối
         # =============================
 
         if "hôm nay" in text:
@@ -89,7 +91,7 @@ def parse_deadline(text: str) -> datetime | None:
             day = next_weekday(now, 0)
 
         # =============================
-        # 3. Thứ trong tuần
+        # 3. Thứ trong tuần: thứ 2 → chủ nhật
         # =============================
         weekdays = {
             "thứ 2": 0, "thứ hai": 0,
@@ -101,19 +103,20 @@ def parse_deadline(text: str) -> datetime | None:
             "chủ nhật": 6,
         }
 
+        # Nếu có từ khóa thứ trong tuần → lấy ngày gần nhất tiếp theo
         for key, wd in weekdays.items():
             if key in text:
                 day = next_weekday(now, wd)
                 break
 
     # =============================
-    # 4. Parse time
+    # 4. Parse time (giờ phút)
     # =============================
     parsed = parse_time(text)
     if parsed:
         hour, minute = parsed
 
-        # Buổi sáng/chều/tối bổ sung thêm logic
+        # Xử lý các từ khóa buổi → chuyển 7h tối thành 19h
         if "tối" in text and hour < 12:
             hour += 12
         if "chiều" in text and hour < 12:
@@ -128,13 +131,16 @@ def parse_deadline(text: str) -> datetime | None:
         minute = 0
 
     # =============================
-    # 6. Tạo deadline
+    # 6. Tạo datetime deadline cuối cùng
     # =============================
     try:
         deadline = day.replace(hour=hour, minute=minute, second=0, microsecond=0)
-        # Nếu thời gian đã qua → chuyển sang ngày hôm sau
+
+        # Nếu thời gian đã qua trong ngày hiện tại → đẩy sang ngày hôm sau
         if deadline < now:
             deadline += timedelta(days=1)
+
         return deadline
     except:
+        # Nếu có lỗi định dạng → trả None
         return None

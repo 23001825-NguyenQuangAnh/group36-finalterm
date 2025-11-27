@@ -1,5 +1,4 @@
 from fastapi import FastAPI
-from routers import nlp_router
 from routers import priority_router
 from fastapi.middleware.cors import CORSMiddleware
 from routers import assistant_router
@@ -19,7 +18,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(nlp_router.router)
 app.include_router(priority_router.router)
 app.include_router(assistant_router.router,  prefix="/ai")
 
