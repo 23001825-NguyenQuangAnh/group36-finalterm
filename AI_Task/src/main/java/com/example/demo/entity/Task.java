@@ -25,28 +25,28 @@ public class Task {
     private Long id;
 
     @Column(nullable = false, length = 255)
-    private String title;
+    private String title;   // Tiêu đề task
 
     @Lob
-    private String description;
+    private String description; // Mô tả task
 
     @Column(name = "duration_minutes", columnDefinition = "INT DEFAULT 0")
-    private Integer durationMinutes;
+    private Integer durationMinutes;    // Thời lượng task
 
-    private LocalDateTime deadline;
+    private LocalDateTime deadline;      // Deadline của task
 
 
     // =======================
     //  ⭐ AI fields (NEW) ⭐
     // =======================
     @Column(name = "urgency")
-    private Double urgency;      // 0.0 → 1.0
+    private Double urgency;      // Điểm mức độ khẩn cấp
 
     @Column(name = "importance")
-    private Double importance;   // 0.0 → 1.0
+    private Double importance;   // Điểm mức độ quan trọng
 
     @Column(name = "priority_score")
-    private Double priorityScore; // 0.0 → 1.0
+    private Double priorityScore; // Điểm ưu tiên tổng hợp
 
 
     @Enumerated(EnumType.STRING)

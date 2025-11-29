@@ -48,9 +48,11 @@ public class NotificationService {
     }
 
     public List<NotificationResponse> getAllNotifications(Long userId) {
+        // Kiểm tra user tồn tại
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
 
+        // Lấy danh sách thông báo của user, sắp xếp theo thời gian
         return notificationRepository.findByUserOrderBySentAtDesc(user)
                 .stream()
                 .map(notificationMapper::toResponse)
@@ -59,16 +61,20 @@ public class NotificationService {
 
     // Đánh dấu thông báo đã đọc
     public void markAsRead(Long id) {
+        // 1. Lấy thông báo theo ID
         Notification notification = notificationRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.NOTIFICATION_NOT_FOUND));
 
+        // 2. Update trạng thái đã đọc
         notification.setIsRead(true);
         notification.setReadAt(LocalDateTime.now());
 
         notificationRepository.save(notification);
     }
 
+    // TẠO NOTIFICATION NHANH CHO TASK
     public NotificationResponse createTaskNotification(Long userId, Long taskId, String message) {
+        // Khởi tạo request (giúp tái sử dụng createNotification)
         NotificationRequest request = new NotificationRequest();
         request.setUserId(userId);
         request.setTaskId(taskId);

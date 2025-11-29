@@ -16,6 +16,7 @@ public class UserController {
 
     private final UserService userService;
 
+    // API cập nhật thông tin người dùng theo email
     @PutMapping("/update/{email}")
     public ApiResponse<UserResponse> userUpdate(@PathVariable String email, @RequestBody UpdateUserRequest request) {
         return ApiResponse.<UserResponse>builder()
@@ -24,6 +25,7 @@ public class UserController {
                 .build();
     }
 
+    // API lấy danh sách tất cả người dùng
     @GetMapping("/getAll")
     public ApiResponse<List<UserResponse>> getAll() {
         return ApiResponse.<List<UserResponse>>builder()
@@ -32,7 +34,8 @@ public class UserController {
                 .build();
     }
 
-    @DeleteMapping("/delete/email")
+    // API xóa người dùng
+    @DeleteMapping("/delete/{email}")
     public ApiResponse<Boolean> userDelete(@PathVariable String email) {
         userService.deleteUser(email);
         return ApiResponse.<Boolean>builder()
@@ -41,6 +44,7 @@ public class UserController {
                 .build();
     }
 
+    // API lấy thông tin chi tiết của user theo email
     @GetMapping("/me/{email}")
     public ApiResponse<UserResponse> getUser(@PathVariable String email) {
         return ApiResponse.<UserResponse>builder()

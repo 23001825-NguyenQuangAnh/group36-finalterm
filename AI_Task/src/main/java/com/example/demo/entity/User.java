@@ -34,10 +34,10 @@ public class User implements UserDetails {
     private String password;
 
     @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt;    // Thời điểm tạo tài khoản
 
     @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    private LocalDateTime updatedAt;    // Thời điểm cập nhật tài khoản
 
     @PrePersist
     protected void onCreate() {

@@ -16,6 +16,7 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
+    // API tạo mới category → nhận CategoryRequest (tên category…)
     @PostMapping("/create")
     public ApiResponse<CategoryResponse> createCategory(@RequestBody CategoryRequest request) {
         return ApiResponse.<CategoryResponse>builder()
@@ -23,6 +24,7 @@ public class CategoryController {
                 .build();
     }
 
+    // API cập nhật category theo ID → dùng PUT vì đây là hành động update
     @PutMapping("/update/{categoryId}")
     public ApiResponse<CategoryResponse> updateCategory(@PathVariable Long categoryId,@RequestBody CategoryRequest request) {
         return ApiResponse.<CategoryResponse>builder()
@@ -30,6 +32,7 @@ public class CategoryController {
                 .build();
     }
 
+    // API lấy danh sách tất cả category
     @GetMapping("/getAll")
     public ApiResponse<List<CategoryResponse>> getAllCategory() {
         return ApiResponse.<List<CategoryResponse>>builder()
@@ -37,6 +40,7 @@ public class CategoryController {
                 .build();
     }
 
+    // API xóa category theo ID
     @DeleteMapping("/delete/{id}")
     public ApiResponse<Void> deleteCategory(@PathVariable Long id) {
         categoryService.deleteCategory(id);
@@ -45,6 +49,7 @@ public class CategoryController {
                 .build();
     }
 
+    // API lấy category theo id
     @GetMapping("/getById/{id}")
     public ApiResponse<CategoryResponse> getCategoryById(@PathVariable Long id) {
         return ApiResponse.<CategoryResponse>builder()

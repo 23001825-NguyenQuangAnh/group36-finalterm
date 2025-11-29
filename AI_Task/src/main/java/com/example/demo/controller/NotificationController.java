@@ -16,6 +16,7 @@ public class NotificationController {
 
     private final NotificationService notificationService;
 
+    // API tạo thông báo mới (ví dụ: khi AI phân tích, khi có task mới, khi task sắp đến hạn)
     @PostMapping("/create")
     public ApiResponse<NotificationResponse> createNotification(@RequestBody NotificationRequest request) {
         return ApiResponse.<NotificationResponse>builder()
@@ -23,6 +24,7 @@ public class NotificationController {
                 .build();
     }
 
+    // API lấy danh sách thông báo của 1 user dựa vào userId
     @GetMapping("/getAll/{userId}")
     public ApiResponse<List<NotificationResponse>> getAllNotifications(@PathVariable Long userId) {
         return ApiResponse.<List<NotificationResponse>>builder()
@@ -30,6 +32,7 @@ public class NotificationController {
                 .build();
     }
 
+    // API đánh dấu một thông báo là "đã đọc"
     @PutMapping("/read/{id}")
     public ApiResponse<Void> markAsRead(@PathVariable Long id) {
         notificationService.markAsRead(id);

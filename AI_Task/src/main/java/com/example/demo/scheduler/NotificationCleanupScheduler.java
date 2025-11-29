@@ -17,8 +17,12 @@ public class NotificationCleanupScheduler {
     @Scheduled(cron = "0 0 3 * * *")
     public void cleanReadNotifications() {
 
+        // Lấy mốc thời gian 24h trước hiện tại
         LocalDateTime threshold = LocalDateTime.now().minusHours(24);
 
+        // Xóa tất cả notification:
+        //  - đã đọc (isRead = true)
+        //  - có readAt < threshold (tức là đã đọc hơn 24h)
         notificationRepository.deleteByIsReadTrueAndReadAtBefore(threshold);
     }
 }

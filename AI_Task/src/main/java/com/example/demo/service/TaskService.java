@@ -39,7 +39,7 @@ public class TaskService {
      */
     public TaskResponse createTask(TaskRequest request) {
 
-        // 1. Lấy user hiện tại
+        // 1. Lấy user hiện tại từ SecurityContext (JWT đã được xác thực)
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
@@ -48,13 +48,10 @@ public class TaskService {
         Task task = taskMapper.toTask(request);
         task.setUser(user);
 
-        // ⭐ FE không gửi status nữa → backend đặt default
         task.setStatus(TaskStatus.PENDING);
 
-        // ⭐ FE không gửi priorityLevel nữa → đặt default tạm thời
         task.setPriorityLevel(PriorityLevel.NORMAL);
 
-        // ⭐ FE không gửi categoryId nữa → AI sẽ set
         task.setCategory(null);
 
         // 3. Lưu task thô trước (để có taskId)

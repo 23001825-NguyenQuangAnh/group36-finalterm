@@ -20,17 +20,21 @@ public class JwtService {
     private String SECRET_KEY;
 
     @Value("${jwt.access-expiration-time}")
-    private long ACCESS_EXPIRATION_TIME;
+    private long ACCESS_EXPIRATION_TIME;     // Thời gian sống của Access Token
 
     @Value("${jwt.refresh-expiration-time}")
-    private long REFRESH_EXPIRATION_TIME ;
+    private long REFRESH_EXPIRATION_TIME ;  // Thời gian sống của Refresh Token
 
     private Key getsignKey() {
+        // SECRET_KEY được convert sang dạng byte để ký HMAC-SHA256
         return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
     }
 
     public String generateToken(String email, String type) {
+        // Chọn thời gian hết hạn dựa theo token type
         long expiration = "refresh".equals(type) ? REFRESH_EXPIRATION_TIME  : ACCESS_EXPIRATION_TIME;
+
+        // Build JWT
         return Jwts.builder()
                 .setSubject(email)
                 .setIssuedAt(new Date())
@@ -41,6 +45,7 @@ public class JwtService {
                 .compact();
     }
 
+    // LẤY EMAIL TỪ TOKEN
     public String extractEmail(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(getsignKey())
@@ -49,6 +54,8 @@ public class JwtService {
                 .getBody()
                 .getSubject();
     }
+
+    // TRẢ VỀ TOÀN BỘ CLAIMS
     public Claims extractAllClaims(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(getsignKey())
@@ -57,6 +64,7 @@ public class JwtService {
                 .getBody();
     }
 
+    // KIỂM TRA TOKEN HỢP LỆ (SIGNATURE + FORMAT)
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder()
@@ -69,8 +77,10 @@ public class JwtService {
             return false;
         }
     }
+
+    // KIỂM TRA TOKEN HẾT HẠN CHƯA
     public boolean isExpired(String token) {
-        return extractAllClaims(token).getExpiration().before(new Date());
+        return extractAllClaims(token).getExpiration().before(new Date()); // expiration < time now → hết hạn
     }
 
     public String extractTokenType(String token) {

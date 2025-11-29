@@ -20,8 +20,8 @@ public class InvalidToken {
     private Long id;
 
     @Column(nullable = false, columnDefinition = "TEXT")
-    private String token;
+    private String token;   // Chuỗi JWT đã bị vô hiệu hóa (đã logout)
 
     @Column(name = "expiry_time", nullable = false)
-    private LocalDateTime expiryTime;
+    private LocalDateTime expiryTime;   // Thời điểm token hết hạn → dùng để dọn rác token
 }

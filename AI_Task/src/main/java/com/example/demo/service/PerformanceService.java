@@ -7,14 +7,12 @@ import com.example.demo.enums.TaskStatus;
 import com.example.demo.repository.TaskRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +20,7 @@ public class PerformanceService {
 
     private final TaskRepository taskRepository;
 
+    //  TỔNG QUAN HIỆU SUẤT
     public PerformanceOverviewResponse getOverview() {
 
         // ====== TUẦN NÀY ======
@@ -32,9 +31,13 @@ public class PerformanceService {
         LocalDateTime startThisWeek = weekStart.atStartOfDay();
         LocalDateTime endThisWeek = weekEnd.atStartOfDay();
 
+        // Tổng số task tạo trong tuần này
         int totalThisWeek = taskRepository.countInRange(startThisWeek, endThisWeek);
+
+        // Số task đã hoàn thành trong tuần này
         int completedThisWeek = taskRepository.countCompletedInRange(startThisWeek, endThisWeek);
 
+        // Tỉ lệ hoàn thành (Completion Rate)
         double completionRateThisWeek = totalThisWeek == 0
                 ? 0
                 : (completedThisWeek * 100.0 / totalThisWeek);
@@ -54,7 +57,10 @@ public class PerformanceService {
         LocalDateTime startLastWeek = lastWeekStartDate.atStartOfDay();
         LocalDateTime endLastWeek = lastWeekEndDate.atStartOfDay();
 
+        // Tổng task tuần trước
         int totalLastWeek = taskRepository.countInRange(startLastWeek, endLastWeek);
+
+        // Số task hoàn thành tuần trước
         int completedLastWeek = taskRepository.countCompletedInRange(startLastWeek, endLastWeek);
 
         double completionRateLastWeek = totalLastWeek == 0
@@ -77,6 +83,8 @@ public class PerformanceService {
                 productivityTrend
         );
     }
+
+    // DỮ LIỆU BIỂU ĐỒ DASHBOARD
     public ChartDataResponse getChartData() {
 
         // ===== 1) DAILY COMPLETED =====

@@ -24,9 +24,11 @@ public class UserService {
     private final UserMapper userMapper;
 
     public RegisterResponse register(RegisterRequest request) {
+        // 1. Kiểm tra email đã tồn tại chưa
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new AppException(ErrorCode.EMAIL_ALREADY_EXISTS);
         }
+        // 2. Kiểm tra username đã tồn tại chưa
         if (userRepository.existsByUsername(request.getUsername())) {
             throw new AppException(ErrorCode.USERNAME_EXISTS);
         }
@@ -46,6 +48,7 @@ public class UserService {
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
         userMapper.updateUserFromRequest(request, user);
 
+        // 3. Xử lý riêng mật khẩu nếu user nhập mật khẩu mới
         if(request.getPassword() != null && !request.getPassword().isBlank()) {
             user.setPassword(passwordEncoder.encode(request.getPassword()));
         }

@@ -13,12 +13,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/auth") // Tất cả URL đều bắt đầu với /auth
 @RequiredArgsConstructor
 public class AuthController {
     private final AuthService authService;
     private final UserService userService;
 
+    // API đăng nhập → nhận email + password → trả về access token + refresh token
     @PostMapping("/login")
     public ApiResponse<AuthResponse> login(@Valid @RequestBody LoginRequest request){
         return ApiResponse.<AuthResponse>builder()
@@ -27,6 +28,7 @@ public class AuthController {
                 .build();
     }
 
+    // API tạo access token mới dựa trên refresh token
     @PostMapping("/refresh")
     public ApiResponse<AuthResponse> refresh(@Valid @RequestBody RefreshRequest request){
         return ApiResponse.<AuthResponse>builder()
@@ -35,6 +37,7 @@ public class AuthController {
                 .build();
     }
 
+    // API đăng ký tài khoản mới
     @PostMapping("/register")
     public ApiResponse<RegisterResponse> register(@RequestBody RegisterRequest request){
         return ApiResponse.<RegisterResponse>builder()
@@ -43,6 +46,7 @@ public class AuthController {
                 .build();
     }
 
+    // API đăng xuất → thực chất là ghi token vào bảng blacklist (token vô hiệu hóa)
     @PostMapping("/logout")
     public ApiResponse<Void> logout(@RequestHeader("Authorization") String header){
         if (header == null || !header.startsWith("Bearer ")) {
