@@ -2,7 +2,7 @@ import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, confusion_matrix
 from training_assistant.preprocessing_assistant import build_input
 from training_assistant.utils_assistant import get_data_path, save_model
 
@@ -38,6 +38,20 @@ def main():
     # Đánh giá độ chính xác trên tập test
     preds = clf.predict(X_test)
     print("✔ Category Accuracy:", accuracy_score(y_test, preds))
+
+    # ⭐ THÊM CONFUSION MATRIX (không ảnh hưởng pipeline)
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+
+    cm = confusion_matrix(y_test, preds)
+    plt.figure(figsize=(8, 6))
+    sns.heatmap(cm, annot=True, fmt="d", cmap="Blues",
+                xticklabels=clf.classes_, yticklabels=clf.classes_)
+    plt.title("Confusion Matrix - Assistant Category Classification")
+    plt.xlabel("Predicted")
+    plt.ylabel("Actual")
+    plt.tight_layout()
+    plt.show()
 
     # Lưu TF-IDF vectorizer và mô hình classification
     save_model(vectorizer, "assistant_vectorizer.pkl")
