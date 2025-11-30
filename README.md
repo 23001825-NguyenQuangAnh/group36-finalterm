@@ -1,12 +1,12 @@
 Để chạy thành công bài tập lớn này phải chạy cùng lúc 3 project: spring boot, FastApi, và frontend
 
-	Chạy project spring boot
-
 Yêu cầu môi trường
 -	Java JDK 17 or 21 (khuyến nghị, phù hợp với Spring Boot 3.x)
 -	Maven 3.8+ (có thể dùng Maven tích hợp trong IntelliJ hoặc cài riêng)
 -	Docker Desktop (để chạy MySQL container)
 -	IntelliJ IDEA (Ultimate/Community đều được)
+  
+	Chạy project spring boot
 
 -	Clone project về máy: clone thư mục AI_Task ở nhánh taskai-springboot về máy
 -	Sau đó mở project bằng IntelliJ IDEA : mở thư mục chứa file src
