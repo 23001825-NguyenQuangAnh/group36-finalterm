@@ -1,3 +1,12 @@
+Yêu cầu môi trường FastAPI:
+
+  - Python 3.10+ (khuyến nghị Python 3.11 để tốc độ tốt hơn)
+  - FastAPI + Uvicorn (server ASGI để chạy ứng dụng)
+  - pip / virtualenv (tạo môi trường ảo và quản lý thư viện)
+  - Các thư viện ML & NLP:
+    scikit-learn, pandas, scipy, joblib, regex / underthesea (tùy chọn)
+  - Visual Studio Code (IDE khuyến nghị để phát triển Python)
+
 	Chạy project fastapi
 -	Clone project từ GitHub: clone thư mục fastapi_ai ở nhánh taskai-fastapi về máy
 -	Mở thư mục đó lên ở Visual Studio Code :mở terminal cd vào thư mục fastapi_ai (nếu đang ở đấy rồi thì thôi)
