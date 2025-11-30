@@ -6,6 +6,7 @@ Báo cáo cuối kì môn Nhập Môn Trí Tuệ Nhân Tạo mã MAT1206E
 Nhánh main chứa toàn bộ tài liệu của dự án, bao gồm:
   📄 Báo cáo (Report)
   📊 Slide thuyết trình
+  
 Mã nguồn không nằm ở nhánh main mà được tách riêng theo từng module của hệ thống.
 
 📁 Cấu trúc các nhánh trong dự án:
