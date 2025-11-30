@@ -9,16 +9,19 @@ Nhánh main chứa toàn bộ tài liệu của dự án, bao gồm:
 Mã nguồn không nằm ở nhánh main mà được tách riêng theo từng module của hệ thống.
 
 📁 Cấu trúc các nhánh trong dự án:
+
 🔹 1. taskai-springboot
   - Chứa toàn bộ source code Spring Boot 
   - 👉 Readme riêng của nhánh sẽ hướng dẫn chi tiết setup + chạy Backend.
+    
 🔹 2. taskai-fastapi
   - Chứa toàn bộ source code FastAPI – AI Service
   - 👉 Readme trong nhánh sẽ hướng dẫn tạo môi trường Python + chạy FastAPI.
+    
 🔹 3. taskai-frontend
   - Chứa toàn bộ source code Frontend
   - 👉 Readme riêng sẽ hướng dẫn cách chạy frontend.
-  - 
+    
 🚀 Lưu ý khi chạy hệ thống
 Để chạy được dự án TaskAI, bạn cần chạy đồng thời cả 3 project:
   - Spring Boot Backend
