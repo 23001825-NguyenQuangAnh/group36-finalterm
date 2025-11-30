@@ -1,3 +1,10 @@
+Yêu cầu môi trường:
+  - Node.js 18+
+  - npm 9+ / yarn / pnpm
+  - Vite 4+
+  - VS Code (Khuyến nghị)
+  - Các Extention trong VS Code cần thiết
+
 	Chạy project frontend (React)
 -	Clone project từ GitHub: clone thư mục group36-finalterm-refactor-folder ở nhánh taskai-frontend về máy
 -	Cài Node.js : Project React Vite yêu cầu: Node.js 18+ , npm
