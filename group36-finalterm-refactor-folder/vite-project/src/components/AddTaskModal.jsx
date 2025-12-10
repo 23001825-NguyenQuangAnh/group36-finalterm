@@ -17,7 +17,7 @@ function AddTaskModal({ onAddTask, onClose, categories }) {
   const [loadingAI, setLoadingAI] = useState(false);
   const [usedAiSuggestion, setUsedAiSuggestion] = useState(false);
 
-  // Date không lệch timezone (chỉ giữ yyyy-MM-ddTHH:mm)
+  // Date không lệch timezone
   const formatLocalDateTime = (date) => {
     if (!date) return null;
     const d = new Date(date);
@@ -62,7 +62,7 @@ function AddTaskModal({ onAddTask, onClose, categories }) {
     }
   };
 
-  // Áp dụng AI
+  // === SỬA 1: ÁP DỤNG GỢI Ý AI ===
   const applyAiSuggestion = () => {
     if (!aiResult) return;
 
@@ -70,7 +70,13 @@ function AddTaskModal({ onAddTask, onClose, categories }) {
       (c) => c.name.toLowerCase() === aiResult.categoryName.toLowerCase()
     );
 
-    if (matched) setCategoryId(matched.id);
+    if (matched) {
+      setCategoryId(matched.id);
+    } else {
+      toast.error(
+        `Không tìm thấy phân loại "${aiResult.categoryName}" trong hệ thống!`
+      );
+    }
 
     setPriorityLevel(aiResult.priorityScore >= 0.6 ? "HIGH" : "NORMAL");
 
@@ -79,9 +85,16 @@ function AddTaskModal({ onAddTask, onClose, categories }) {
     }
 
     setUsedAiSuggestion(true);
+    toast.success("Đã áp dụng gợi ý từ AI ✅");
   };
 
-  // Submit form
+  // === SỬA 2: NÚT BỎ QUA — RESET AI RESULT ===
+  const discardAiSuggestion = () => {
+    setAiResult(null);
+    setUsedAiSuggestion(false);
+  };
+
+  // Submit
   const handleSubmit = () => {
     if (!title.trim()) return toast.error("Tên task không được bỏ trống!");
     if (!categoryId) return toast.error("Hãy chọn phân loại!");
@@ -103,7 +116,7 @@ function AddTaskModal({ onAddTask, onClose, categories }) {
 
     onAddTask(newTask);
 
-    // reset form
+    // reset
     setTitle("");
     setDescription("");
     setDeadline(null);
@@ -170,7 +183,7 @@ function AddTaskModal({ onAddTask, onClose, categories }) {
             {loadingAI ? "Đang phân tích..." : "🔮 Phân tích với AI"}
           </button>
 
-          {/* AI RESULT */}
+          {/* === SỬA 3: KHỐI GỢI Ý AI + 2 NÚT === */}
           {aiResult && (
             <div className="bg-purple-50 border-l-4 border-purple-500 p-3 rounded">
               <h4 className="font-semibold text-purple-700">Gợi ý từ AI</h4>
@@ -191,11 +204,9 @@ function AddTaskModal({ onAddTask, onClose, categories }) {
                 >
                   Dùng gợi ý
                 </button>
+
                 <button
-                  onClick={() => {
-                    setAiResult(null);
-                    setUsedAiSuggestion(false);
-                  }}
+                  onClick={discardAiSuggestion}
                   className="px-3 py-1 bg-gray-300 rounded"
                 >
                   Bỏ qua
