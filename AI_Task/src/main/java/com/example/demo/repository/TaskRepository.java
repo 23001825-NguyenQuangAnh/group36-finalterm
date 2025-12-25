@@ -8,10 +8,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.List;
 
 public interface TaskRepository extends JpaRepository<Task, Long> {
+
+    // ========================================
+    // TRUY VẤN CƠ BẢN
+    // ========================================
 
     List<Task> findByStatus(TaskStatus status);
     List<Task> findByPriorityLevel(PriorityLevel priorityLevel);
@@ -26,13 +29,105 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     List<Task> findByUserAndDeadlineBetween(User user, LocalDateTime start, LocalDateTime end);
 
-    // Lấy task theo khoảng thời gian tạo
-    List<Task> findAllByCreatedAtBetween(LocalDateTime start, LocalDateTime end);
 
-    // Đếm task quá hạn nhưng không completed
-    int countByDeadlineBeforeAndStatusNot(LocalDateTime now, TaskStatus taskStatus);
+    // ========================================
+    // TRUY VẤN THEO USER
+    // ========================================
 
-    // ======= 2 QUERY quan trọng để tính Productivity Trend =======
+    List<Task> findByUserIdAndDeadlineBeforeAndStatusNot(
+            Long userId,
+            LocalDateTime deadline,
+            TaskStatus status
+    );
+
+    int countByUserIdAndDeadlineBeforeAndStatusNot(
+            Long userId,
+            LocalDateTime now,
+            TaskStatus status
+    );
+
+    List<Task> findByUserIdAndDeadlineBetween(
+            Long userId,
+            LocalDateTime startOfDay,
+            LocalDateTime endOfDay
+    );
+
+    int countByUserIdAndStatus(Long userId, TaskStatus status);
+
+    List<Task> findAllByUserIdAndCreatedAtBetween(
+            Long userId,
+            LocalDateTime start,
+            LocalDateTime end
+    );
+
+
+    // ========================================
+    // PRODUCTIVITY TREND (Theo user)
+    // ========================================
+
+    // Tổng task tạo trong khoảng
+    @Query("""
+        SELECT COUNT(t)
+        FROM Task t
+        WHERE t.user.id = :userId
+          AND t.createdAt BETWEEN :start AND :end
+    """)
+    int countInRangeByUser(Long userId, LocalDateTime start, LocalDateTime end);
+
+    // Tổng task hoàn thành trong khoảng (dựa vào updatedAt)
+    @Query("""
+        SELECT COUNT(t)
+        FROM Task t
+        WHERE t.user.id = :userId
+          AND t.status = 'COMPLETED'
+          AND t.updatedAt BETWEEN :start AND :end
+    """)
+    int countCompletedInRangeByUser(Long userId, LocalDateTime start, LocalDateTime end);
+
+
+    // ========================================
+    // DAILY COMPLETED BY USER (dùng updatedAt)
+    // ========================================
+
+    @Query(value = """
+        SELECT 
+            SUM(CASE WHEN DAYOFWEEK(t.updated_at) = 2 AND t.status = 'COMPLETED' THEN 1 ELSE 0 END), 
+            SUM(CASE WHEN DAYOFWEEK(t.updated_at) = 3 AND t.status = 'COMPLETED' THEN 1 ELSE 0 END), 
+            SUM(CASE WHEN DAYOFWEEK(t.updated_at) = 4 AND t.status = 'COMPLETED' THEN 1 ELSE 0 END), 
+            SUM(CASE WHEN DAYOFWEEK(t.updated_at) = 5 AND t.status = 'COMPLETED' THEN 1 ELSE 0 END), 
+            SUM(CASE WHEN DAYOFWEEK(t.updated_at) = 6 AND t.status = 'COMPLETED' THEN 1 ELSE 0 END), 
+            SUM(CASE WHEN DAYOFWEEK(t.updated_at) = 7 AND t.status = 'COMPLETED' THEN 1 ELSE 0 END), 
+            SUM(CASE WHEN DAYOFWEEK(t.updated_at) = 1 AND t.status = 'COMPLETED' THEN 1 ELSE 0 END)
+        FROM tasks t
+        WHERE t.user_id = :userId
+    """, nativeQuery = true)
+    List<Object[]> countCompletedEachDayOfWeekByUser(Long userId);
+
+
+    // ========================================
+    // WEEKLY COMPLETION RATE BY USER
+    // ========================================
+
+    @Query(value = """
+        SELECT 
+            ROUND(
+                100.0 *
+                SUM(CASE WHEN t.status = 'COMPLETED' THEN 1 ELSE 0 END)
+                / COUNT(*)
+            )
+        FROM tasks t
+        WHERE t.user_id = :userId
+        GROUP BY WEEK(t.updated_at)
+        ORDER BY WEEK(t.updated_at) DESC
+        LIMIT 4
+    """, nativeQuery = true)
+    List<Number> getWeeklyCompletionRateByUser(Long userId);
+
+
+    // ========================================
+    // QUERIES CŨ (KHÔNG DÙNG THÊO USER)
+    // (CÓ THỂ XOÁ SAU NẾU KHÔNG DÙNG)
+    // ========================================
 
     @Query("""
         SELECT COUNT(t)
@@ -45,41 +140,9 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
         SELECT COUNT(t)
         FROM Task t
         WHERE t.status = 'COMPLETED'
-        AND t.createdAt BETWEEN :start AND :end
+          AND t.createdAt BETWEEN :start AND :end
     """)
     int countCompletedInRange(LocalDateTime start, LocalDateTime end);
 
-    List<Task> findByUserIdAndDeadlineBeforeAndStatusNot(
-            Long userId,
-            LocalDateTime now,
-            TaskStatus status
-    );
-    List<Task> findByUserIdAndDeadlineBetween(Long userId, LocalDateTime startOfDay, LocalDateTime endOfDay);
-
-    @Query("""
-    SELECT 
-        SUM(CASE WHEN DAYOFWEEK(t.createdAt) = 2 AND t.status = 'COMPLETED' THEN 1 ELSE 0 END),
-        SUM(CASE WHEN DAYOFWEEK(t.createdAt) = 3 AND t.status = 'COMPLETED' THEN 1 ELSE 0 END),
-        SUM(CASE WHEN DAYOFWEEK(t.createdAt) = 4 AND t.status = 'COMPLETED' THEN 1 ELSE 0 END),
-        SUM(CASE WHEN DAYOFWEEK(t.createdAt) = 5 AND t.status = 'COMPLETED' THEN 1 ELSE 0 END),
-        SUM(CASE WHEN DAYOFWEEK(t.createdAt) = 6 AND t.status = 'COMPLETED' THEN 1 ELSE 0 END),
-        SUM(CASE WHEN DAYOFWEEK(t.createdAt) = 7 AND t.status = 'COMPLETED' THEN 1 ELSE 0 END),
-        SUM(CASE WHEN DAYOFWEEK(t.createdAt) = 1 AND t.status = 'COMPLETED' THEN 1 ELSE 0 END)
-    FROM Task t
-""")
-    List<Object[]> countCompletedEachDayOfWeekRaw();
-
-
-    @Query("""
-    SELECT 
-        ROUND(100.0 * SUM(CASE WHEN t.status = 'COMPLETED' THEN 1 ELSE 0 END) / COUNT(*))
-    FROM Task t
-    GROUP BY WEEK(t.createdAt)
-    ORDER BY WEEK(t.createdAt) DESC
-    LIMIT 4
-""")
-    List<Number> getWeeklyCompletionRateRaw();
-
     int countByStatus(TaskStatus status);
-
 }
