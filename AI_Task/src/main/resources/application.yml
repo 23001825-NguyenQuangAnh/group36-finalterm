@@ -1,0 +1,28 @@
+server:
+  port: 8081
+  servlet:
+    context-path: /api
+
+spring:
+  datasource:
+    url: ${DBMS_CONNECTION:jdbc:mysql://127.0.0.1:3309/task_ai?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Ho_Chi_Minh}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${DBMS_USERNAME:root}
+    password: ${DBMS_PASSWORD:root}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+jwt:
+  secret-key: your-super-long-secret-key-for-jwt-signing-1234567890
+  access-expiration-time: 3600000 # 1h
+  refresh-expiration-time: 604800000 # 1 tuần
+
+fastapi:
+  url: http://127.0.0.1:8000/priority/analyze
+
